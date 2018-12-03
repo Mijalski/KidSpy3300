@@ -7,7 +7,7 @@ namespace DAL
 {
     public interface ITeacherAccount
     {
-        TeacherAccount GetById(int id);
+        TeacherAccount GetById(string id);
         TeacherAccount GetBySchoolClass(int id);
         SchoolClass GetSchoolClass(int id);
         void Add(TeacherAccount newTeacher);

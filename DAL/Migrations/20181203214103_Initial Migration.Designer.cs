@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DAL.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20181203192932_Initial Migration")]
+    [Migration("20181203214103_Initial Migration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -354,8 +354,8 @@ namespace DAL.Migrations
                         .WithMany("Students")
                         .HasForeignKey("ParentAccountId");
 
-                    b.HasOne("DAL.Model.SchoolClass")
-                        .WithMany("Students")
+                    b.HasOne("DAL.Model.SchoolClass", "SchoolClass")
+                        .WithMany()
                         .HasForeignKey("SchoolClassId");
                 });
 

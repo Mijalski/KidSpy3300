@@ -17,6 +17,8 @@ namespace DAL.Model
         
         [Required]
         public string LastName { get; set; }
+
+        public SchoolClass SchoolClass { get; set; }
         
         //virtual will make them lazyload
         public virtual IEnumerable<Mark> Marks { get; set; }

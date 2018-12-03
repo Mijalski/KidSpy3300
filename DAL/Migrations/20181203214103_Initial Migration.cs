@@ -26,6 +26,7 @@ namespace DAL.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
+                    Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
@@ -40,7 +41,6 @@ namespace DAL.Migrations
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
                     AccessFailedCount = table.Column<int>(nullable: false),
-                    Id = table.Column<string>(nullable: false),
                     Login = table.Column<string>(nullable: false),
                     Name = table.Column<string>(nullable: true),
                     LastName = table.Column<string>(nullable: true),
@@ -217,8 +217,8 @@ namespace DAL.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
-                    ParentAccountId = table.Column<string>(nullable: true),
-                    SchoolClassId = table.Column<int>(nullable: true)
+                    SchoolClassId = table.Column<int>(nullable: true),
+                    ParentAccountId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

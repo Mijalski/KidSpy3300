@@ -352,8 +352,8 @@ namespace DAL.Migrations
                         .WithMany("Students")
                         .HasForeignKey("ParentAccountId");
 
-                    b.HasOne("DAL.Model.SchoolClass")
-                        .WithMany("Students")
+                    b.HasOne("DAL.Model.SchoolClass", "SchoolClass")
+                        .WithMany()
                         .HasForeignKey("SchoolClassId");
                 });
 

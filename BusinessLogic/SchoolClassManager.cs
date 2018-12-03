@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using DAL;
 using DAL.Model;
@@ -28,6 +29,23 @@ namespace BusinessLogic
         {
             context.Add(newSchoolClass);
             context.SaveChanges();
+        }
+
+        public void Delete(SchoolClass oldSchoolClass)
+        {
+            context.Remove(oldSchoolClass);
+            context.SaveChanges();
+        }
+
+        public IEnumerable<Student> GetStudents(int id)
+        {
+            return context.Students.Where(_ => _.SchoolClass.Id == id);
+        }
+
+        public TeacherAccount GetTeacherAccount(int id)
+        {
+            throw  new Exception("fasf");
+            //return context.TeacherAccounts.Where(_ => _.Id == id);
         }
     }
 }

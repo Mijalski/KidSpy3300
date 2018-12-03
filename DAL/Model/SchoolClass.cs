@@ -14,8 +14,6 @@ namespace DAL.Model
 
         [Required]
         public string Name { get; set; }
-
-        public IEnumerable<Student> Students { get; set; }
         
         public TeacherAccount TeacherAccount { get; set; }
         
