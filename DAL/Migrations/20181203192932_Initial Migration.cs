@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace KidSpy3300.Data.Migrations
+namespace DAL.Migrations
 {
-    public partial class CreateIdentitySchema : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,7 +26,6 @@ namespace KidSpy3300.Data.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
                     UserName = table.Column<string>(maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
                     Email = table.Column<string>(maxLength: 256, nullable: true),
@@ -40,7 +39,14 @@ namespace KidSpy3300.Data.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Id = table.Column<string>(nullable: false),
+                    Login = table.Column<string>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    LastName = table.Column<string>(nullable: true),
+                    Password = table.Column<string>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    Title = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -153,6 +159,112 @@ namespace KidSpy3300.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Status = table.Column<int>(nullable: false),
+                    MessageContent = table.Column<string>(nullable: false),
+                    MessageTitle = table.Column<string>(nullable: false),
+                    MessageDate = table.Column<DateTime>(nullable: false),
+                    MessageFromId = table.Column<string>(nullable: true),
+                    MessageToId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_AspNetUsers_MessageFromId",
+                        column: x => x.MessageFromId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Messages_AspNetUsers_MessageToId",
+                        column: x => x.MessageToId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SchoolClasses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false),
+                    TeacherAccountId = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SchoolClasses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SchoolClasses_AspNetUsers_TeacherAccountId",
+                        column: x => x.TeacherAccountId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Students",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
+                    ParentAccountId = table.Column<string>(nullable: true),
+                    SchoolClassId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Students", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Students_AspNetUsers_ParentAccountId",
+                        column: x => x.ParentAccountId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Students_SchoolClasses_SchoolClassId",
+                        column: x => x.SchoolClassId,
+                        principalTable: "SchoolClasses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Marks",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    MarkType = table.Column<int>(nullable: false),
+                    TeacherId = table.Column<string>(nullable: false),
+                    MarkDate = table.Column<DateTime>(nullable: false),
+                    StudentId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Marks", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Marks_Students_StudentId",
+                        column: x => x.StudentId,
+                        principalTable: "Students",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Marks_AspNetUsers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -191,6 +303,41 @@ namespace KidSpy3300.Data.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Marks_StudentId",
+                table: "Marks",
+                column: "StudentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Marks_TeacherId",
+                table: "Marks",
+                column: "TeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_MessageFromId",
+                table: "Messages",
+                column: "MessageFromId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_MessageToId",
+                table: "Messages",
+                column: "MessageToId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SchoolClasses_TeacherAccountId",
+                table: "SchoolClasses",
+                column: "TeacherAccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_ParentAccountId",
+                table: "Students",
+                column: "ParentAccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Students_SchoolClassId",
+                table: "Students",
+                column: "SchoolClassId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -211,7 +358,19 @@ namespace KidSpy3300.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Marks");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Students");
+
+            migrationBuilder.DropTable(
+                name: "SchoolClasses");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
