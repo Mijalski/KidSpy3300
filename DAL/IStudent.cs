@@ -7,10 +7,10 @@ namespace DAL
 {
     public interface IStudent
     {
-        IEnumerable<Student> GetAll();
+        List<Student> GetAll();
         Student GetById(int id);
         void Add(Student newStudent, ParentAccount parent);
-        IEnumerable<Mark> GetMarks(int id);
+        List<Mark> GetMarks(int id);
         SchoolClass GetClass(int id);
         void Add(Student newStudent);
     }

@@ -15,9 +15,9 @@ namespace BusinessLogic
             context = _context;
         }
 
-        public IEnumerable<SchoolClass> GetAll()
+        public List<SchoolClass> GetAll()
         {
-            return context.SchoolClasses;
+            return context.SchoolClasses.ToList();
         }
 
         public SchoolClass GetById(int id)
@@ -37,15 +37,14 @@ namespace BusinessLogic
             context.SaveChanges();
         }
 
-        public IEnumerable<Student> GetStudents(int id)
+        public List<Student> GetStudents(int id)
         {
-            return context.Students.Where(_ => _.SchoolClass.Id == id);
+            return context.Students.Where(_ => _.SchoolClass.Id == id).ToList();
         }
 
-        public TeacherAccount GetTeacherAccount(int id)
+        public TeacherAccount GetTeacherAccount(string id)
         {
-            throw  new Exception("fasf");
-            //return context.TeacherAccounts.Where(_ => _.Id == id);
+            return context.TeacherAccounts.FirstOrDefault(_ => _.Id == id);
         }
     }
 }

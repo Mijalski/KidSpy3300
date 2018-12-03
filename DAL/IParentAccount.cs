@@ -9,7 +9,7 @@ namespace DAL
     {
         ParentAccount GetById(string id);
         ParentAccount GetByStudentId(int studentId);
-        IEnumerable<Student> GetChildren(int id);
+        List<Student> GetChildren(int id);
         void Add(ParentAccount newParentAccount);
         void Delete(ParentAccount oldTeacherAccount);
     }

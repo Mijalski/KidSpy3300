@@ -7,11 +7,11 @@ namespace DAL
 {
     public interface ISchoolClass
     {
-        IEnumerable<SchoolClass> GetAll();
+        List<SchoolClass> GetAll();
         SchoolClass GetById(int id);
         void Add(SchoolClass newSchoolClass);
         void Delete(SchoolClass oldSchoolClass);
-        IEnumerable<Student> GetStudents(int id);
-        TeacherAccount GetTeacherAccount(int id);
+        List<Student> GetStudents(int id);
+        TeacherAccount GetTeacherAccount(string id);
     }
 }
