@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.106
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KidSpy3300", "KidSpy3300\KidSpy3300.csproj", "{8449E1FC-A8C0-4569-B136-E57F3ADEC18B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8449E1FC-A8C0-4569-B136-E57F3ADEC18B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8449E1FC-A8C0-4569-B136-E57F3ADEC18B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8449E1FC-A8C0-4569-B136-E57F3ADEC18B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8449E1FC-A8C0-4569-B136-E57F3ADEC18B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {82E51EE9-3006-490C-9CED-21F7829A448E}
+	EndGlobalSection
+EndGlobal
