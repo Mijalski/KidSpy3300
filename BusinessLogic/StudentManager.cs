@@ -7,7 +7,7 @@ using DAL.Model;
 
 namespace BusinessLogic
 {
-    class StudentManager : IStudent
+    public class StudentManager : IStudent
     {
         private DatabaseContext context;
 
@@ -23,27 +23,23 @@ namespace BusinessLogic
 
         public Student GetById(int id)
         {
-            return context.Students.FirstOrDefault(_ => _.Id == id);
+            return context.Students.Single(_ => _.Id == id);
+        }
+
+        public List<Student> GetForParent(string id)
+        {
+            return context.ParentAccounts.Single(_ => _.Id == id).Students.ToList();
         }
 
         public void Add(Student newStudent, ParentAccount parent)
         {
-            throw new NotImplementedException();
+            context.Add(newStudent);
+            
         }
 
-        public List<Mark> GetMarks(int id)
+        public List<Student> GetStudentsForSchoolClass(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public SchoolClass GetClass(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void Add(Student newStudent)
-        {
-            throw new NotImplementedException();
+            return context.Students.Where(_ => _.SchoolClass.Id == id).ToList();
         }
     }
 }

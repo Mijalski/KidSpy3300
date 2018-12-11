@@ -9,8 +9,6 @@ namespace DAL
     {
         TeacherAccount GetById(string id);
         TeacherAccount GetBySchoolClass(int id);
-        SchoolClass GetSchoolClass(int id);
         void Add(TeacherAccount newTeacher);
-        void Delete(TeacherAccount oldTeacher);
     }
 }

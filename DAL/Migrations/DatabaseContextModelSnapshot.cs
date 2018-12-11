@@ -133,25 +133,21 @@ namespace DAL.Migrations
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
-                    b.Property<string>("Login")
+                    b.Property<string>("Name")
                         .IsRequired();
-
-                    b.Property<string>("Name");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256);
-
-                    b.Property<string>("Password")
-                        .IsRequired();
 
                     b.Property<string>("PasswordHash");
 

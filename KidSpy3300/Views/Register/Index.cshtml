@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewData["Title"] = "Register/Log in - KidSpy3300";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using DAL.Model
+@using KidSpy3300.Models
+@model KidSpy3300.Models.RegisterModel
+
+<div class="page-margin">
+    <div class="mb-3">
+        <div class="row">
+            <div class="d-none d-xl-block col-xl-2"></div>
+            <div class="col-sm-8">
+                <h1>Kid Spy 3300 </h1>
+                <h3>Best way to spy on your kids!</h3>
+                <div class="text-danger" asp-validation-summary="All"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="d-none d-xl-block col-xl-2"></div>
+        <div class="col-md-12 col-lg-6 col-xl-4">
+            <h4 class="big-offset">Log in:</h4>
+            <form class="log-in-form" method="POST" asp-controller="Register" asp-action="LogInAction">
+                <div class="form-group">
+                    <label for="email-log-in">Email address</label>
+                    <input type="email" class="form-control" id="email-log-in" placeholder="Email" asp-for="LoginLogin">
+                </div>
+                <div class="form-group">
+                    <label for="password-log-in">Password</label>
+                    <input type="password" class="form-control" id="password-log-in" placeholder="Password" asp-for="LoginPassword">
+                </div>
+                <button id="btn-log-in" type="submit" class="btn btn-success">Log in</button>
+            </form>
+        </div>
+        <div class="col-md-12 col-lg-6 col-xl-4 border-forms">
+            <h4>Register:</h4>
+            <form class="register-form" method="POST" asp-controller="Register" asp-action="RegisterAction">
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="userAccountStatus" value="true" id="teacher-register" checked asp-for="isTeacher">
+                        I am a teacher
+                    </label>
+                </div>
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="userAccountStatus" value="false" id="parent-register" asp-for="isTeacher">
+                        I am a concerned parent
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label for="email-register">Email address</label>
+                    <input type="email" class="form-control" id="email-register" placeholder="Email" asp-for="RegisterLogin">
+                    <span asp-validation-for="RegisterLogin" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="password-register">Password</label>
+                    <input type="password" class="form-control" id="password-register" placeholder="Password" asp-for="RegisterPassword">
+                    <span asp-validation-for="RegisterPassword" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="name-register">First Name</label>
+                    <input type="text" class="form-control" id="name-register" placeholder="First Name" asp-for="FirstName">
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label for="last-name-register">Last Name</label>
+                    <input type="text" class="form-control" id="last-name-register" placeholder="Last Name" asp-for="LastName">
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                    <span id="last-name-register-helper" class="help-block">Too short</span>
+                </div>
+                <div class="form-group">
+                    <label for="class-select-register">Class</label>
+                    <select id="class-select-register" class="form-control" asp-for="TeacherSchoolClassId">
+                        <option value="-1">Select...</option>
+                        @foreach (var c in Model.SchoolClasses)
+                        {
+                            <option value="@c.Id">@c.Name</option>
+                        }
+                    </select>
+                    <span asp-validation-for="TeacherSchoolClassId" class="text-danger"></span>
+                </div>
+                <button id="btn-register" type="submit" class="btn btn-primary">Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/register-form.js"></script>

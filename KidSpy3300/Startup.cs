@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessLogic;
 using DAL;
+using DAL.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
@@ -37,7 +39,7 @@ namespace KidSpy3300
             services.AddDbContext<DatabaseContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
+            services.AddDefaultIdentity<UserAccount>()
                 .AddEntityFrameworkStores<DatabaseContext>();
 
             services.Configure<IdentityOptions>(options =>
@@ -47,8 +49,30 @@ namespace KidSpy3300
                 options.Password.RequiredLength = 6;
                 options.Password.RequireLowercase = true;
                 options.Password.RequireUppercase = false;
+
+                options.User.RequireUniqueEmail = true;
             });
+
+            // Alter application cookie info
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Redirect to /login 
+                options.LoginPath = "/Register";
+
+                // Change cookie timeout to expire in 15 seconds
+                options.ExpireTimeSpan = TimeSpan.FromSeconds(1500);
+            });
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSingleton(Configuration);
+
+            services.AddScoped<ISchoolClass, SchoolClassManager>();
+            services.AddScoped<IUserAccount, UserAccountManager>();
+            services.AddScoped<IMark, MarkManager>();
+            services.AddScoped<IMessage, MessageManager>();
+            services.AddScoped<IParentAccount, ParentAccountManager>();
+            services.AddScoped<IStudent, StudentManager>();
+            services.AddScoped<ITeacherAccount, TeacherAccountManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

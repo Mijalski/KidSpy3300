@@ -6,17 +6,18 @@ using Microsoft.AspNetCore.Identity;
 
 namespace DAL.Model
 {
+    public enum UserAccountType
+    {
+        TeacherAccount = 0,
+        ParentAccount = 1
+    }
+
     public abstract class UserAccount : IdentityUser
     {
         [Required]
-        public string Login { get; set; }
-
         public string Name { get; set; }
-
-        public string LastName { get; set; }
-
+        
         [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
+        public string LastName { get; set; }
     }
 }

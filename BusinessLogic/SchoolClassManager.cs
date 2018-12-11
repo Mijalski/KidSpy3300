@@ -20,6 +20,11 @@ namespace BusinessLogic
             return context.SchoolClasses.ToList();
         }
 
+        public List<SchoolClass> GetAllNotTaken()
+        {
+            return context.SchoolClasses.Where(_ => _.TeacherAccount == null).ToList();
+        }
+
         public SchoolClass GetById(int id)
         {
             return context.SchoolClasses.FirstOrDefault(_ => _.Id == id);
@@ -35,16 +40,6 @@ namespace BusinessLogic
         {
             context.Remove(oldSchoolClass);
             context.SaveChanges();
-        }
-
-        public List<Student> GetStudents(int id)
-        {
-            return context.Students.Where(_ => _.SchoolClass.Id == id).ToList();
-        }
-
-        public TeacherAccount GetTeacherAccount(string id)
-        {
-            return context.TeacherAccounts.FirstOrDefault(_ => _.Id == id);
         }
     }
 }

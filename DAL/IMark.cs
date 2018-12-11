@@ -8,8 +8,7 @@ namespace DAL
     public interface IMark
     {
         Mark GetById(int id);
-        List<Mark> GetForStudentId(int id);
-        List<Mark> GetForTeacherId(int id);
+        List<Mark> GetForTeacherId(string id);
         void Add(Mark newMark);
     }
 }

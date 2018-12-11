@@ -8,8 +8,8 @@ namespace DAL
     public interface IMessage
     {
         Message GetById(int id);
-        List<Message> GetForUserId(int id);
+        List<Message> GetForUserSending(string id);
+        List<Message> GetForUserReceiving(string id);
         void Send(Message message);
-        void Delete(Message message);
     }
 }
