@@ -44,7 +44,10 @@ namespace KidSpy3300.Controllers
 
             await _signInManager.SignInAsync(user, true);
             
-            return Ok();
+            if(user is ParentAccount)
+                return RedirectToAction("Index","ParentAccount");
+            
+            return RedirectToAction("Index","TeacherAccount");
         }
 
         [HttpPost]
@@ -94,11 +97,11 @@ namespace KidSpy3300.Controllers
                 {
                     await _signInManager.SignInAsync(user, true);
 
-                    return Ok();
+                    return RedirectToAction("Success");
                 }
             }
 
-            return Error();
+            return RedirectToAction("Error");
         }
 
         public IActionResult Index()
@@ -127,8 +130,6 @@ namespace KidSpy3300.Controllers
 
         public IActionResult Error()
         {
-            ViewData["Message"] = "Your contact page.";
-
             return View();
         }
     }
