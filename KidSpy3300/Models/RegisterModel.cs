@@ -34,6 +34,7 @@ namespace KidSpy3300.Models
         public string LastName { get; set; }
         
         [Required]
+        [Range(0, double.MaxValue)]
         public int TeacherSchoolClassId { get; set; }
     }
 }

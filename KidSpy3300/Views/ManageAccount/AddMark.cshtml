@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Add a kid";
+    Layout = "~/Views/Shared/_StandardLayout.cshtml";
+}
+
+@using DAL.Model
+@using KidSpy3300.Models
+@model KidSpy3300.Models.AddMarkModel
+
+<h2 class="manage-title">Add mark</h2>
+
+<div class="row">
+    <div class="offset-md-3"></div>
+    <div class="col-12 col-md-6">
+        <div class="my-box-shadow">
+            <div class="my-box-title">
+                <h5>Grade @Model.Student.Name @Model.Student.LastName</h5>
+            </div>
+            <div class="my-box">
+                <form class="register-form" method="POST" asp-controller="ManageAccount" asp-action="AddMarkSubmit" asp-route-studentid="@Model.Student.Id">
+
+                    <div class="form-group">
+                        <label for="mark-select">Class:</label>
+                        <select id="mark-select" class="form-control" asp-for="MarkValue">
+                            <option value="-1">Select...</option>
+                            @foreach (var mark in Enum.GetValues(typeof(MarkType)))
+                            {
+                                <option value="@Convert.ToInt32(mark)">@mark</option>
+                            }
+                        </select>
+                        <span asp-validation-for="MarkValue" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="content">Description:</label>
+                        <textarea type="text" rows="6" class="form-control" id="description" placeholder="" asp-for="Description"></textarea>
+                    </div>
+
+                    <div class="float-right-button-holder">
+                        <div class="float-right-button-holder">
+                            <a id="go-back" class="float-left btn btn-secondary mt-4" asp-controller="ManageAccount" asp-action="Index">
+                                <span class="fa fa-chevron-left"></span>
+                                Back
+                            </a>
+                            <button id="send-message" class="float-right btn btn-success mt-4">
+                                <span class="fa fa-plus"></span>
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

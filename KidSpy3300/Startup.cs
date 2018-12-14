@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using BusinessLogic;
 using DAL;
 using DAL.Model;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
@@ -51,18 +52,15 @@ namespace KidSpy3300
                 options.Password.RequireUppercase = false;
 
                 options.User.RequireUniqueEmail = true;
+                
             });
-
-            // Alter application cookie info
+            
             services.ConfigureApplicationCookie(options =>
             {
-                // Redirect to /login 
                 options.LoginPath = "/Register";
-
-                // Change cookie timeout to expire in 15 seconds
                 options.ExpireTimeSpan = TimeSpan.FromSeconds(1500);
             });
-
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton(Configuration);
 

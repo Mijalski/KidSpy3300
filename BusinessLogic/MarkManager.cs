@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DAL;
 using DAL.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic
 {
@@ -21,15 +22,15 @@ namespace BusinessLogic
             return context.Marks.Single(_ => _.Id == id);
         }
         
-
         public List<Mark> GetForTeacherId(string id)
         {
             return context.Marks.Where(_ => _.Teacher.Id == id).ToList();
         }
 
-        public void Add(Mark newMark)
+        public List<Mark> GetForStudentId(int id)
         {
-            context.Add(newMark);
+            return context.Students.Include(_ => _.Marks).Single(_ => _.Id == id).Marks.ToList();
         }
+        
     }
 }

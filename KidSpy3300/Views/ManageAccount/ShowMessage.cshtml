@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Add a kid";
+    Layout = "~/Views/Shared/_StandardLayout.cshtml";
+}
+
+@using DAL.Model
+@using KidSpy3300.Models
+@model KidSpy3300.Models.ShowMessageModel
+
+<h2 class="manage-title">Message</h2>
+
+<div class="row">
+    <div class="offset-md-3"></div>
+    <div class="col-12 col-md-6">
+        <div class="my-box-shadow">
+            <div class="my-box-title">
+                @if (Model.YourMessage)
+                {
+                <h5>To: @Model.Message.MessageTo.Name @Model.Message.MessageTo.LastName</h5>
+                }
+                else
+                {
+                    <h5>From: @Model.Message.MessageFrom.Name @Model.Message.MessageFrom.LastName</h5>
+                }
+            </div>
+            <div class="my-box">
+                <div class="msg-title mb-3">@Model.Message.MessageTitle</div>
+                <div class="mb-2 pb-2 border-bottom">@Model.Message.MessageContent</div>
+
+                <div>Sent on: @Model.Message.MessageDate</div>
+                @if (Model.YourMessage)
+                {
+                    <div><i>Status: @Model.Message.Status</i></div>
+                } 
+                <div class="float-right-button-holder">
+                    <a id="go-back" class="float-left btn btn-secondary mt-4" asp-controller="ManageAccount" asp-action="Index">
+                        <span class="fa fa-chevron-left"></span>
+                        Back
+                    </a>
+                    @if (!Model.YourMessage)
+                    {
+                    <a id="send-message" class="float-right btn btn-success mt-4" asp-controller="ManageAccount" asp-action="SendMessage" asp-route-userId="@Model.Message.MessageFrom.Id">
+                        <span class="fa fa-envelope"></span>
+                        Respond
+                    </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

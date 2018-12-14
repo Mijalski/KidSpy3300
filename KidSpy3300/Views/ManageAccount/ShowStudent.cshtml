@@ -1,0 +1,54 @@
+﻿@{
+    ViewData["Title"] = "Add a kid";
+    Layout = "~/Views/Shared/_StandardLayout.cshtml";
+}
+
+@using DAL.Model
+@using KidSpy3300.Models
+@model KidSpy3300.Models.ShowStudentModel
+
+<h2 class="manage-title">Student</h2>
+
+<div class="row">
+    <div class="offset-md-3"></div>
+    <div class="col-12 col-md-6">
+        <div class="my-box-shadow">
+            <div class="my-box-title">
+                @Model.Student.Name @Model.Student.LastName
+            </div>
+            <div class="my-box">
+                @if (Model.Marks.Any())
+                {
+                    <div class="msg-title mb-3">Marks:</div>
+                }
+                else
+                {
+                    <div class="msg-title mb-3 text-center">*Tumbleweed*</div>
+                }
+                @foreach (var mark in @Model.Marks)
+                {
+                    <div>@mark.MarkType - @mark.Description</div>
+                }
+                @if (!Model.IsTeacher)
+                {
+                    <div class="border-top">
+                        @Model.Student.SchoolClass.Name - @Model.TeacherAccount.Name @Model.TeacherAccount.LastName
+                    </div>
+                }
+                <div class="float-right-button-holder">
+                    <a id="go-back" class="float-left btn btn-secondary mt-4" asp-controller="ManageAccount" asp-action="Index">
+                        <span class="fa fa-chevron-left"></span>
+                        Back
+                    </a>
+                    @if (Model.IsTeacher)
+                    {
+                        <a id="go-back" class="float-right btn btn-success mt-4" asp-controller="ManageAccount" asp-route-studentId="@Model.Student.Id" asp-action="AddMark">
+                            <span class="fa fa-plus"></span>
+                            Add Mark
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

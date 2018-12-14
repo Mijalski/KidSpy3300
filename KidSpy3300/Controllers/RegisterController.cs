@@ -18,36 +18,35 @@ namespace KidSpy3300.Controllers
     public class RegisterController : Controller
     {
         private readonly ISchoolClass _schoolClasses;
-        private readonly IUserAccount _userAccount;
         private readonly UserManager<UserAccount> _userManager;
         private readonly SignInManager<UserAccount> _signInManager; 
 
-        public RegisterController(ISchoolClass schoolClasses, UserManager<UserAccount> userManager, IUserAccount userAccount, SignInManager<UserAccount> signInManager)
+        public RegisterController(ISchoolClass schoolClasses, UserManager<UserAccount> userManager, SignInManager<UserAccount> signInManager)
         {
             _schoolClasses = schoolClasses;
             _userManager = userManager;
-            _userAccount = userAccount;
             _signInManager = signInManager;
         }
         
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogInAction(RegisterModel registerModel)
-        {
+         {
             await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
 
             UserAccount user = await _userManager.FindByEmailAsync(registerModel.LoginLogin);
             var passwordResult = new PasswordHasher<UserAccount>().VerifyHashedPassword(user,user.PasswordHash,registerModel.LoginPassword);
 
             if (passwordResult == PasswordVerificationResult.Failed)
-                return Error();
+                return RedirectToAction("Error", "Home");
 
             await _signInManager.SignInAsync(user, true);
             
-            if(user is ParentAccount)
-                return RedirectToAction("Index","ParentAccount");
             
-            return RedirectToAction("Index","TeacherAccount");
+            return user is ParentAccount ?
+                RedirectToAction("Parent","ManageAccount") :
+                RedirectToAction("Teacher","ManageAccount"); 
+
         }
 
         [HttpPost]
@@ -100,8 +99,8 @@ namespace KidSpy3300.Controllers
                     return RedirectToAction("Success");
                 }
             }
-
-            return RedirectToAction("Error");
+            
+            return RedirectToAction("Error", "Home");
         }
 
         public IActionResult Index()

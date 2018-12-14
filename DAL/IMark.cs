@@ -9,6 +9,6 @@ namespace DAL
     {
         Mark GetById(int id);
         List<Mark> GetForTeacherId(string id);
-        void Add(Mark newMark);
+        List<Mark> GetForStudentId(int id);
     }
 }

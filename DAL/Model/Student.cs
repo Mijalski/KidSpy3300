@@ -21,6 +21,6 @@ namespace DAL.Model
         public SchoolClass SchoolClass { get; set; }
         
         //virtual will make them lazyload
-        public virtual IEnumerable<Mark> Marks { get; set; }
+        public virtual List<Mark> Marks { get; set; }
     }
 }

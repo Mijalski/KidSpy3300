@@ -1,0 +1,67 @@
+﻿
+@{
+    ViewData["Title"] = "Manage your account";
+    Layout = "~/Views/Shared/_StandardLayout.cshtml";
+}
+
+@using DAL.Model
+@using KidSpy3300.Models
+@model KidSpy3300.Models.ManageAccountModel
+
+<h2 class="manage-title">Manage your account</h2>
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="my-box my-box-shadow">
+            <h5 class="d-inline-block mt-1">Messages:</h5>
+            <a asp-area="" asp-controller="ManageAccount" asp-action="SendMessage" id="send-message" class="float-right btn btn-primary">
+                <span class="fa fa-plus"></span>
+                Send
+            </a>
+            <div class="d-block">
+                <button id="show-in" class="btn btn-link pl-0 font-weight-bold">Inbound</button>
+                <button id="show-out" class="btn btn-link pl-0">Outbound</button>
+            </div>
+            <div id="msg-in">
+                @foreach (var msg in Model.MessagesInbound)
+                {
+                    <div class="message-box border-top mt-2">
+                        <a asp-area="" asp-controller="ManageAccount" asp-action="ShowMessage" asp-route-messageId="@msg.Id"  class="msg-title">@msg.MessageTitle</a>
+                        @if (msg.Status != Status.Read)
+                        {
+                            <span class="fa fa-exclamation not-read-warning"></span>
+                        }
+                        <div>From: @msg.MessageFrom.Name @msg.MessageFrom.LastName</div>
+                    </div>
+                }
+            </div>
+            <div id="msg-out">
+                @foreach (var msg in Model.MessagesOutbound)
+                {
+                    <div class="message-box border-top mt-2">
+                        <a asp-area="" asp-controller="ManageAccount" asp-action="ShowMessage" asp-route-messageId="@msg.Id" class="msg-title">@msg.MessageTitle</a>
+                        <div>To: @msg.MessageTo.Name @msg.MessageTo.LastName</div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="my-box my-box-shadow">
+            <h5 class="d-inline-block mt-1">Kids:</h5>
+            <a asp-area="" asp-controller="ManageAccount" asp-action="AddKid" id="add-kid" class="float-right btn btn-primary">
+                <span class="fa fa-plus"></span>
+                Add
+            </a>
+            @foreach (var student in Model.Students)
+            {
+                <div class="message-box border-top mt-2">
+                    <a asp-area="" asp-controller="ManageAccount" asp-action="ShowStudent" asp-route-studentId="@student.Id"  class="msg-title">@student.Name</a>
+                    <div>@student.SchoolClass.Name - @student.SchoolClass.TeacherAccount.Name @student.SchoolClass.TeacherAccount.LastName</div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/manage-account.js"></script>

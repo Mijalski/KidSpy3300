@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DAL;
 using DAL.Model;
+using Microsoft.EntityFrameworkCore;
 
 namespace BusinessLogic
 {
@@ -28,13 +29,29 @@ namespace BusinessLogic
 
         public List<Student> GetForParent(string id)
         {
-            return context.ParentAccounts.Single(_ => _.Id == id).Students.ToList();
+            var parent = context.ParentAccounts
+                .Include(_ => _.Students)
+                .ThenInclude(_ => _.SchoolClass)
+                .ThenInclude(_ => _.TeacherAccount)
+                .Single(_ => _.Id == id);
+
+            return parent.Students.ToList();
         }
 
-        public void Add(Student newStudent, ParentAccount parent)
+        public void Add(Student newStudent)
         {
             context.Add(newStudent);
-            
+            context.SaveChanges();
+        }
+
+        public void AddNewMark(int studentId, Mark mark)
+        {
+            context.Add(mark);
+            context.Students
+                .Include(_ => _.Marks)
+                .Single(_ => _.Id == studentId)
+                .Marks.Add(mark);
+            context.SaveChanges();
         }
 
         public List<Student> GetStudentsForSchoolClass(int id)

@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Add a kid";
+    Layout = "~/Views/Shared/_StandardLayout.cshtml";
+}
+
+@using DAL.Model
+@using KidSpy3300.Models
+@model KidSpy3300.Models.SendMessageModel
+
+<h2 class="manage-title">Send Message</h2>
+
+<div class="row">
+    <div class="offset-md-3"></div>
+    <div class="col-12 col-md-6">
+        <div class="my-box-shadow">
+            <div class="my-box-title">
+                <h5>New Message</h5>
+            </div>
+            <div class="my-box">
+
+                @if (Model.UserAccounts !=null && Model.UserAccounts.Any())
+                {
+                <form class="register-form" method="POST" asp-controller="ManageAccount" asp-action="SendMessageSubmit">
+                    <div class="form-group">
+                         <label for="teacher-select">To:</label>
+                         <select id="teacher-select" class="form-control" asp-for="ToUserId">
+                             <option value="-1">Select...</option>
+                             @foreach (var t in Model.UserAccounts)
+                             {
+                                 @if (t.Id == Model.PreSelectedId)
+                                  {
+                                      <option selected="selected" value="@t.Id">@t.Name @t.LastName</option>
+                                  }
+                                  else
+                                  {
+                                      <option value="@t.Id">@t.Name @t.LastName</option>
+                                  }
+                             }
+                         </select>
+                         <span asp-validation-for="ToUserId" class="text-danger"></span>
+                     </div>
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" class="form-control" id="title" placeholder="Title" asp-for="MessageTitle">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content">Body:</label>
+                        <textarea type="text" rows="6" class="form-control" id="content" placeholder="" asp-for="MessageContent"></textarea>
+                    </div>
+
+                    <div class="float-right-button-holder">
+                        <a id="go-back" class="float-left btn btn-secondary mt-4" asp-controller="ManageAccount" asp-action="Index">
+                            <span class="fa fa-chevron-left"></span>
+                            Back
+                        </a>
+                        <button id="send-message" class="float-right btn btn-success mt-4">
+                            <span class="fa fa-envelope"></span>
+                            Send
+                        </button>
+                    </div>
+                </form>
+                }
+                else
+                {
+                <div class="d-block text-center">Sorry, no teachers to send a message to</div>
+                <div class="float-right-button-holder">
+                    <a id="go-back" class="float-left btn btn-secondary mt-4" asp-controller="ManageAccount" asp-action="Index">
+                        <span class="fa fa-chevron-left"></span>
+                        Back
+                    </a>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

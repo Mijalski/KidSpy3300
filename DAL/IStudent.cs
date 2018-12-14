@@ -10,7 +10,8 @@ namespace DAL
         List<Student> GetAll();
         Student GetById(int id);
         List<Student> GetForParent(string id);
-        void Add(Student newStudent, ParentAccount parent);
+        void Add(Student newStudent);
+        void AddNewMark(int studentId, Mark mark);
         List<Student> GetStudentsForSchoolClass(int id);
     }
 }

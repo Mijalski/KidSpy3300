@@ -27,5 +27,7 @@ namespace DAL.Model
         public TeacherAccount Teacher { get; set; }
 
         public DateTime MarkDate { get; set; }
+
+        public string Description { get; set; }
     }
 }

@@ -6,6 +6,6 @@ namespace DAL.Model
 {
     public class ParentAccount : UserAccount
     {
-        public  IEnumerable<Student> Students { get; set; }
+        public  List<Student> Students { get; set; }
     }
 }

@@ -20,14 +20,21 @@
 h4 {
     margin-bottom: 20px;
 }
+.not-read-warning {
+    color: #ffc107;
+}
 
 footer p {
     float: right;
     margin-right: 20px;
 }
 
-@media (min-width: 992px) {
+.float-right-button-holder {
+    width: 100%;
+    overflow: hidden;
+}
 
+@media (min-width: 992px) {
     .border-forms {
         border-left: #ccc solid 1px;
     }
@@ -36,13 +43,47 @@ footer p {
         margin-top: 65px;
     }
     .margin-left-right-5 {
-        margin: 0 50px 0 50px;
+        margin: 0 80px 0 80px;
     }
 
 }
 
-@media (max-width: 991px) {
+.msg-title {
+    font-size: 1.3em;
+    font-weight: bold;
+}
 
+.manage-title {
+    margin-bottom: 20px;
+}
+
+.my-box-title {
+    background-color: #48745a;
+    border: 10px solid #48745a;
+}
+
+.my-box-title h5 {
+    margin: 0;
+}
+
+.my-box {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 40px;
+}
+
+.my-box-shadow {
+    -webkit-box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.45); 
+    box-shadow: 5px 5px 15px 5px rgba(0,0,0,0.45);
+}
+
+.message-box {
+    border: 1px solid #ccc;
+    padding: 5px;
+    margin: 5px;
+}
+
+@media (max-width: 991px) {
     .border-forms {
         padding-top: 20px;
         margin-top: 20px;
