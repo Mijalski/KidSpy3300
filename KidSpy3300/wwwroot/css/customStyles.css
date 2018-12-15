@@ -24,6 +24,28 @@ h4 {
     color: #ffc107;
 }
 
+.mark-big-size {
+    font-size: 24px;
+}
+.mark-description {
+    max-width: 75%;
+}
+.mark-color-A {
+    color: #0f1;
+}
+.mark-color-B {
+    color: #c9ff00;
+}
+.mark-color-C {
+    color: #fff400;
+}
+.mark-color-D {
+    color: #e58b00;
+}
+.mark-color-E {
+    color: #7a0000;
+}
+
 footer p {
     float: right;
     margin-right: 20px;

@@ -29,5 +29,7 @@ namespace DAL.Model
         public DateTime MarkDate { get; set; }
 
         public string Description { get; set; }
+
+        public Assignment Assignment { get; set; }
     }
 }

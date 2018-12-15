@@ -10,5 +10,6 @@ namespace DAL
         Mark GetById(int id);
         List<Mark> GetForTeacherId(string id);
         List<Mark> GetForStudentId(int id);
+        List<Mark> GetForAssignmentId(int id);
     }
 }

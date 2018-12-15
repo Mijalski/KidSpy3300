@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Add a kid";
+    ViewData["Title"] = "Grade " + @Model.Student.Name + @Model.Student.LastName;
     Layout = "~/Views/Shared/_StandardLayout.cshtml";
 }
 
@@ -20,7 +20,7 @@
                 <form class="register-form" method="POST" asp-controller="ManageAccount" asp-action="AddMarkSubmit" asp-route-studentid="@Model.Student.Id">
 
                     <div class="form-group">
-                        <label for="mark-select">Class:</label>
+                        <label for="mark-select">Mark:</label>
                         <select id="mark-select" class="form-control" asp-for="MarkValue">
                             <option value="-1">Select...</option>
                             @foreach (var mark in Enum.GetValues(typeof(MarkType)))
@@ -42,7 +42,7 @@
                                 <span class="fa fa-chevron-left"></span>
                                 Back
                             </a>
-                            <button id="send-message" class="float-right btn btn-success mt-4">
+                            <button id="add-mark" class="float-right btn btn-success mt-4">
                                 <span class="fa fa-plus"></span>
                                 Add
                             </button>

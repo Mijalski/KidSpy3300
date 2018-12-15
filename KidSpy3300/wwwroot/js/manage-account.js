@@ -20,5 +20,27 @@
         msgOut.hide();
     });
 
+    if ($("#add-assignment").length) {
+        var showNotGradedA = $("#show-assign-not");
+        var showGradedA = $("#show-assign");
+        var notGradedA = $("#assign-not-graded");
+        var gradedA = $("#assign-graded");
+        
+        gradedA.hide();
+
+        showGradedA.click(function() {
+            showNotGradedA.removeClass("font-weight-bold");
+            showGradedA.addClass("font-weight-bold");
+            notGradedA.hide();
+            gradedA.show();
+        });
+    
+        showNotGradedA.click(function() {
+            showNotGradedA.addClass("font-weight-bold");
+            showGradedA.removeClass("font-weight-bold");
+            notGradedA.show();
+            gradedA.hide();
+        });
+    }
 })();
 

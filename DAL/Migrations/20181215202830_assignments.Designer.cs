@@ -4,14 +4,16 @@ using DAL;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DAL.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20181215202830_assignments")]
+    partial class assignments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,10 +29,6 @@ namespace DAL.Migrations
 
                     b.Property<DateTime>("DateTime");
 
-                    b.Property<DateTime>("DueDate");
-
-                    b.Property<bool>("IsGraded");
-
                     b.Property<string>("Name")
                         .IsRequired();
 
@@ -40,7 +38,7 @@ namespace DAL.Migrations
 
                     b.HasIndex("SchoolClassId");
 
-                    b.ToTable("Assignments");
+                    b.ToTable("Assignment");
                 });
 
             modelBuilder.Entity("DAL.Model.Mark", b =>

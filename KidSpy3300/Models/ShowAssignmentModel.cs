@@ -7,12 +7,10 @@ using DAL.Model;
 
 namespace KidSpy3300.Models
 {
-    public class ShowStudentModel
+    public class ShowAssignmentModel
     {
-        public Student Student { get; set; }
+        public Assignment Assignment { get; set; }
         public List<Mark> Marks { get; set; }
-        public List<Assignment> Assignments { get; set; }
-        public TeacherAccount TeacherAccount { get; set; }
-        public bool IsTeacher { get; set; }
+        public List<Student> Students { get; set; }
     }
 }

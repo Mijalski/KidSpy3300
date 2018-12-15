@@ -12,5 +12,7 @@ namespace KidSpy3300.Models
         public List<Message> MessagesInbound;
         public List<Student> Students;
         public SchoolClass TeacherSchoolClass;
+        public List<Assignment> AssignmentsNotGraded;
+        public List<Assignment> AssignmentsGraded;
     }
 }

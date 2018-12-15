@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Add assignment for " + @Model.ForSchoolClass.Name;
+    Layout = "~/Views/Shared/_StandardLayout.cshtml";
+}
+
+@using DAL.Model
+@using KidSpy3300.Models
+@model KidSpy3300.Models.AddAssignmentModel
+
+<h2 class="manage-title">Add Assignment</h2>
+
+<div class="row">
+    <div class="offset-md-3"></div>
+    <div class="col-12 col-md-6">
+        <div class="my-box-shadow">
+            <div class="my-box-title">
+                <h5>Assignment for @Model.ForSchoolClass.Name</h5>
+            </div>
+            <div class="my-box">
+                <form class="register-form" method="POST" asp-controller="ManageAccount" asp-action="AddAssignmentSubmit" asp-route-studentid="@Model.ForSchoolClass.Id">
+
+                    <div class="form-group">
+                        <label for="assignment-name">Assignment:</label>
+                        <input type="text" class="form-control" id="assignment-name" placeholder="Assignment" asp-for="AssignmentName">
+                    </div>
+                    <div class="form-group">
+                        <label for="assignment-name">Due Date:</label>
+                        <input type="text" value="@DateTime.Today.ToShortDateString()" class="form-control" id="datetimepicker" data-date-format="dd-mm-yyyy" asp-for="DueDateTime">
+                    </div>
+                    <div class="float-right-button-holder">
+                        <div class="float-right-button-holder">
+                            <a id="go-back" class="float-left btn btn-secondary mt-4" asp-controller="ManageAccount" asp-action="Index">
+                                <span class="fa fa-chevron-left"></span>
+                                Back
+                            </a>
+                            <button id="add-assignment" class="float-right btn btn-success mt-4">
+                                <span class="fa fa-plus"></span>
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

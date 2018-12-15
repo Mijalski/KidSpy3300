@@ -17,12 +17,15 @@ namespace BusinessLogic
             context = _context;
         }
 
-        public Message GetById(int id)
+        public Message GetById(int id, string userId)
         {
             var message = context.Messages.Include(_ => _.MessageFrom).Include(_ => _.MessageTo).Single(_ => _.Id == id);
 
-            message.Status = Status.Read;
-            context.SaveChanges();
+            if (userId == message.MessageTo.Id)
+            {
+                message.Status = Status.Read;
+                context.SaveChanges();
+            }
 
             return message;
         }

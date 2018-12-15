@@ -19,6 +19,7 @@ namespace DAL
         public DbSet<Student> Students { get; set; }
         public DbSet<TeacherAccount> TeacherAccounts { get; set; }
         public DbSet<UserAccount> UserAccounts { get; set; }
+        public DbSet<Assignment> Assignments { get; set; }
         
     }
 }

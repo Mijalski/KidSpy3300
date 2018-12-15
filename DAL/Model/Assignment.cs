@@ -6,23 +6,23 @@ using System.Text;
 
 namespace DAL.Model
 {
-    public class Student
+    public class Assignment
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        
+
         [Required]
         public string Name { get; set; }
-        
-        [Required]
-        public string LastName { get; set; }
 
         public SchoolClass SchoolClass { get; set; }
-        
-        //virtual will make them lazyload
-        public virtual List<Mark> Marks { get; set; }
 
-        public bool IsActive { get; set; }
+        [Required]
+        public DateTime DateTime { get; set; }
+
+        [Required]
+        public DateTime DueDate { get; set; }
+
+        public bool IsGraded { get; set; }
     }
 }

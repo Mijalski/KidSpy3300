@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = "Grade " + @Model.Assignment;
+    Layout = "~/Views/Shared/_StandardLayout.cshtml";
+}
+
+@using DAL.Model
+@using KidSpy3300.Models
+@model KidSpy3300.Models.GradeAssignmentModel
+
+<h2 class="manage-title">Grade assignment</h2>
+
+<div class="row">
+    <div class="offset-md-3"></div>
+    <div class="col-12 col-md-6">
+        <div class="my-box-shadow">
+            <div class="my-box-title">
+                <h5>@Model.Assignment.Name</h5>
+            </div>
+            <div class="my-box">
+                <form class="register-form" method="POST" asp-controller="ManageAccount" asp-action="GradeAssignmentSubmit" asp-route-assigmentId="@Model.Assignment.Id">
+                    @for(var i = 0; i<Model.Students.Count;i++)
+                    {
+                        <div class="form-group">
+                            <input class="d-none" asp-for="StudentIds[i]" value="@Model.Students[i].Id"/>
+                            <label for="mark-select">@Model.Students[i].Name @Model.Students[i].LastName:</label>
+                            <select id="mark-select" class="form-control" asp-for="Marks[i]">
+                                <option value="-1">Select...</option>
+                                @foreach (var mark in Enum.GetValues(typeof(MarkType)))
+                                {
+                                    <option value="@Convert.ToInt32(mark)">@mark</option>
+                                }
+                            </select>
+                        </div>
+                    }
+                    <div class="float-right-button-holder">
+                        <div class="float-right-button-holder">
+                            <a id="go-back" class="float-left btn btn-secondary mt-4" asp-controller="ManageAccount" asp-action="Index">
+                                <span class="fa fa-chevron-left"></span>
+                                Back
+                            </a>
+                            <button id="submit-grades" class="float-right btn btn-success mt-4">
+                                <span class="fa fa-plus"></span>
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

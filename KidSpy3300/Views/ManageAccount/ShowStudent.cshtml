@@ -1,5 +1,5 @@
 ﻿@{
-    ViewData["Title"] = "Add a kid";
+    ViewData["Title"] = "Viewing "+ @Model.Student.Name + " " + @Model.Student.LastName;
     Layout = "~/Views/Shared/_StandardLayout.cshtml";
 }
 
@@ -27,12 +27,42 @@
                 }
                 @foreach (var mark in @Model.Marks)
                 {
-                    <div>@mark.MarkType - @mark.Description</div>
+                    <div class="border-bottom">
+                        <i class="float-right mt-2">@mark.MarkDate</i>
+                        <span class="font-weight-bold">
+
+                            <span class="mark-big-size mark-color-@mark.MarkType">
+                                @mark.MarkType
+                            </span>
+                            @if (mark.Assignment != null)
+                            {
+                                <div>@mark.Assignment.Name</div>
+                            }
+
+                        </span>
+                        <div>@mark.Description</div>
+                    </div>
                 }
+                @if (Model.Assignments.Any())
+                {
+                    <div class="msg-title mb-4 mt-3">Assignments not yet graded:</div>
+                }
+
+                @foreach (var assignment in @Model.Assignments)
+                {
+                    <div class="border-bottom mb-2">
+                        <i class="float-right ">Due: @assignment.DueDate.ToShortDateString()</i>
+                        <span class="font-weight-bold">
+                            @assignment.Name
+                        </span>
+                    </div>
+                }
+
                 @if (!Model.IsTeacher)
                 {
-                    <div class="border-top">
-                        @Model.Student.SchoolClass.Name - @Model.TeacherAccount.Name @Model.TeacherAccount.LastName
+                    <div class="mt-4">
+                        Class: @Model.Student.SchoolClass.Name <br />
+                        Teacher: @Model.TeacherAccount.Name @Model.TeacherAccount.LastName
                     </div>
                 }
                 <div class="float-right-button-holder">
@@ -42,10 +72,18 @@
                     </a>
                     @if (Model.IsTeacher)
                     {
-                        <a id="go-back" class="float-right btn btn-success mt-4" asp-controller="ManageAccount" asp-route-studentId="@Model.Student.Id" asp-action="AddMark">
+                        <a id="add-mark" class="float-right btn btn-success mt-4" asp-controller="ManageAccount" asp-route-studentId="@Model.Student.Id" asp-action="AddMark">
                             <span class="fa fa-plus"></span>
                             Add Mark
                         </a>
+                    }
+                    else
+                    {
+                        <a id="delete-student" class="float-right btn btn-danger mt-4" asp-controller="ManageAccount" asp-route-studentId="@Model.Student.Id" asp-action="DeleteStudentSubmit">
+                            <span class="fa fa-user-minus"></span>
+                            Remove kid
+                        </a>
+
                     }
                 </div>
             </div>

@@ -71,6 +71,7 @@ namespace KidSpy3300
             services.AddScoped<IParentAccount, ParentAccountManager>();
             services.AddScoped<IStudent, StudentManager>();
             services.AddScoped<ITeacherAccount, TeacherAccountManager>();
+            services.AddScoped<IAssignment, AssignmentManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

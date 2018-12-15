@@ -29,8 +29,20 @@ namespace BusinessLogic
 
         public List<Mark> GetForStudentId(int id)
         {
-            return context.Students.Include(_ => _.Marks).Single(_ => _.Id == id).Marks.ToList();
+            return context.Students
+                .Include(_ => _.Marks)
+                .ThenInclude(_ => _.Assignment)
+                .Single(_ => _.Id == id)
+                .Marks
+                .ToList();
         }
-        
+
+        public List<Mark> GetForAssignmentId(int id)
+        {
+            return context.Marks
+                .Include(_ => _.Assignment)
+                .Where(_ => _.Assignment.Id == id)
+                .ToList();
+        }
     }
 }

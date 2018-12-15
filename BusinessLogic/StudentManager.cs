@@ -27,6 +27,11 @@ namespace BusinessLogic
             return context.Students.Single(_ => _.Id == id);
         }
 
+        public Student GetByMark(Mark mark)
+        {
+            return context.Students.Single(_ => _.Marks.Contains(mark));
+        }
+
         public List<Student> GetForParent(string id)
         {
             var parent = context.ParentAccounts
@@ -35,11 +40,12 @@ namespace BusinessLogic
                 .ThenInclude(_ => _.TeacherAccount)
                 .Single(_ => _.Id == id);
 
-            return parent.Students.ToList();
+            return parent.Students.Where(_ => _.IsActive).ToList();
         }
 
         public void Add(Student newStudent)
         {
+            newStudent.IsActive = true;
             context.Add(newStudent);
             context.SaveChanges();
         }
@@ -56,7 +62,14 @@ namespace BusinessLogic
 
         public List<Student> GetStudentsForSchoolClass(int id)
         {
-            return context.Students.Where(_ => _.SchoolClass.Id == id).ToList();
+            return context.Students.Where(_ => _.SchoolClass.Id == id && _.IsActive).ToList();
+        }
+
+        public void Deactivate(int id)
+        {
+            var student = context.Students.Single(_ => _.Id == id);
+            student.IsActive = false;
+            context.SaveChanges();
         }
     }
 }
