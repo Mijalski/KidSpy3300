@@ -28,12 +28,14 @@
                 <div class="form-group">
                     <label for="email-log-in">Email address</label>
                     <input type="email" class="form-control" id="email-log-in" placeholder="Email" asp-for="LoginLogin">
+                    <span id="login-login-validation" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label for="password-log-in">Password</label>
                     <input type="password" class="form-control" id="password-log-in" placeholder="Password" asp-for="LoginPassword">
+                    <span id="login-password-validation" class="text-danger"></span>
                 </div>
-                <button id="btn-log-in" type="submit" class="btn btn-success">Log in</button>
+                <button id="btn-log-in"  onclick="return validateLogin()" type="submit" class="btn btn-success">Log in</button>
             </form>
         </div>
         <div class="col-md-12 col-lg-6 col-xl-4 border-forms">
@@ -70,7 +72,6 @@
                     <label for="last-name-register">Last Name</label>
                     <input type="text" class="form-control" id="last-name-register" placeholder="Last Name" asp-for="LastName">
                     <span asp-validation-for="LastName" class="text-danger"></span>
-                    <span id="last-name-register-helper" class="help-block">Too short</span>
                 </div>
                 <div class="form-group">
                     <label for="class-select-register">Class</label>
@@ -81,9 +82,9 @@
                             <option value="@c.Id">@c.Name</option>
                         }
                     </select>
-                    <span asp-validation-for="TeacherSchoolClassId" class="text-danger"></span>
+                    <span id="class-select-register-validation" class="text-danger"></span>
                 </div>
-                <button id="btn-register" type="submit" class="btn btn-primary">Register</button>
+                <button id="btn-register"  onclick="return validateRegister()" type="submit" class="btn btn-primary">Register</button>
             </form>
         </div>
     </div>

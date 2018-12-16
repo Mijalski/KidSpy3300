@@ -34,20 +34,26 @@ namespace KidSpy3300.Controllers
          {
             await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
 
-            UserAccount user = await _userManager.FindByEmailAsync(registerModel.LoginLogin);
-            var passwordResult = new PasswordHasher<UserAccount>().VerifyHashedPassword(user,user.PasswordHash,registerModel.LoginPassword);
+             if (registerModel.LoginLogin != null)
+             {
+                 UserAccount user = await _userManager.FindByEmailAsync(registerModel.LoginLogin);
 
-            if (passwordResult == PasswordVerificationResult.Failed)
-                return RedirectToAction("Error", "Home");
+                 if (user != null)
+                 {
+                     var passwordResult = new PasswordHasher<UserAccount>().VerifyHashedPassword(user, user.PasswordHash, registerModel.LoginPassword);
 
-            await _signInManager.SignInAsync(user, true);
-            
-            
-            return user is ParentAccount ?
-                RedirectToAction("Parent","ManageAccount") :
-                RedirectToAction("Teacher","ManageAccount"); 
+                     if (passwordResult == PasswordVerificationResult.Failed)
+                         return RedirectToAction("Error", "Home");
 
-        }
+                     await _signInManager.SignInAsync(user, true);
+
+                    return user is ParentAccount ? RedirectToAction("Parent", "ManageAccount") : RedirectToAction("Teacher", "ManageAccount");
+                 }
+
+             }
+             
+             return RedirectToAction("Error", "Home");
+         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -63,6 +69,12 @@ namespace KidSpy3300.Controllers
 
                 if (accountType == UserAccountType.TeacherAccount)
                 {
+
+                    if (_schoolClasses.GetById(registerModel.TeacherSchoolClassId) == null)
+                    {
+                        return RedirectToAction("Error", "Home");
+                    }
+
                     var newTeacher = new TeacherAccount
                     {
                         UserName = registerModel.RegisterLogin, /*ALSO KNOWN AS EMAIL */

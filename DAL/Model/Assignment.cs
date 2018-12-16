@@ -24,5 +24,7 @@ namespace DAL.Model
         public DateTime DueDate { get; set; }
 
         public bool IsGraded { get; set; }
+
+        public MarkType AverageMark { get; set; }
     }
 }

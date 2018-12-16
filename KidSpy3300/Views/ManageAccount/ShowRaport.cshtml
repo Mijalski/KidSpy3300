@@ -1,0 +1,103 @@
+﻿@{
+    ViewData["Title"] = "Overview " + @Model.SchoolClass.Name;
+    Layout = "~/Views/Shared/_StandardLayout.cshtml";
+}
+
+@using DAL.Model
+@using KidSpy3300.Models
+@model KidSpy3300.Models.ShowRaportModel
+
+<h2 class="manage-title">
+    <a id="go-back" class="btn btn-secondary mr-4" asp-controller="ManageAccount" asp-action="Index">
+        <span class="fa fa-chevron-left"></span>
+        Back
+    </a>Raport for @Model.SchoolClass.Name
+</h2>
+
+<div class="row">
+    <div class="col-12 col-md-6">
+        <div class="my-box my-box-shadow">
+            <h5 class="d-inline-block mt-1">Marks:</h5>
+            <div class="message-box border-top mt-2">
+                <strong>Total: @Model.MarksTotal</strong>
+            </div>
+            <div class="message-box border-top mt-2">
+                <span>A: @Model.MarksA.Count (@Html.Raw($"{(float)Model.MarksA.Count / (float)Model.MarksTotal * 100:0.00}")%)</span>
+            </div>
+            <div class="message-box border-top mt-2">
+                <span>B: @Model.MarksB.Count (@Html.Raw($"{(float)Model.MarksB.Count / (float)Model.MarksTotal * 100:0.00}")%)</span>
+            </div>
+            <div class="message-box border-top mt-2">
+                <span>C: @Model.MarksC.Count (@Html.Raw($"{(float)Model.MarksC.Count / (float)Model.MarksTotal * 100:0.00}")%)</span>
+            </div>
+            <div class="message-box border-top mt-2">
+                <span>D: @Model.MarksD.Count (@Html.Raw($"{(float)Model.MarksD.Count / (float)Model.MarksTotal * 100:0.00}")%)</span>
+            </div>
+            <div class="message-box border-top mt-2">
+                <span>E: @Model.MarksE.Count  (@Html.Raw($"{(float)Model.MarksE.Count / (float)Model.MarksTotal * 100:0.00}")%)</span>
+            </div>
+        </div>
+        <div class="my-box my-box-shadow">
+            <h5 class="d-inline-block mt-1">Assignments:</h5>
+            <div class="message-box border-top mt-2">
+                <strong>Total: @Model.AssignmentsTotal</strong>
+            </div>
+            <div class="message-box border-top mt-2">
+                <span>
+                    Done: @Model.AssignmentsGraded.Count (@Html.Raw($"{(float)Model.AssignmentsGraded.Count / (float)Model.AssignmentsTotal * 100:0.00}")%)
+                    <a id="show-assignment-done" onclick="" href="#" class="fa fa-chevron-down float-right mr-1 mt-1 link-no-underline"></a>
+                    <div id="assign-graded" class="d-none">
+                        @foreach (var assignment in Model.AssignmentsGraded)
+                        {
+                            <div class="message-box border-top mt-2">
+                                <a asp-area="" asp-controller="ManageAccount" asp-action="ShowAssignment" asp-route-assignmentId="@assignment.Id" class="msg-title">@assignment.Name</a>
+                                <div>
+                                    Average grade:
+                                    <span class="mark-color-@assignment.AverageMark font-weight-bold">
+                                        @assignment.AverageMark
+                                    </span>,
+                                    Due: @assignment.DueDate.ToShortDateString()
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </span>
+            </div>
+            <div class="message-box border-top mt-2">
+                <span>
+                    In Progress: @Model.AssignmentsNotGraded.Count (@Html.Raw($"{(float)Model.AssignmentsNotGraded.Count / (float)Model.AssignmentsTotal * 100:0.00}")%)
+                    <a id="show-assignment-progress" onclick="" href="#" class="fa fa-chevron-down float-right mr-1 mt-1 link-no-underline"></a>
+                    <div id="assign-not-graded" class="d-none">
+                        @foreach (var assignment in Model.AssignmentsNotGraded)
+                        {
+                            <div class="message-box border-top mt-2">
+                                <a asp-area="" asp-controller="ManageAccount" asp-action="GradeAssignment" asp-route-assignmentId="@assignment.Id" class="msg-title">@assignment.Name</a>
+                                <div>Due: @assignment.DueDate.ToShortDateString()</div>
+                            </div>
+                        }
+                    </div>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-md-6">
+        <div class="my-box my-box-shadow">
+            <h5 class="d-inline-block mt-1">List of Students:</h5>
+            <div class="message-box border-top mt-2">
+                <strong>Total: @Model.Students.Count</strong>
+            </div>
+            @foreach (var student in Model.Students)
+            {
+                <div class="message-box border-top mt-2">
+                    <a asp-area="" asp-controller="ManageAccount" asp-action="ShowStudent" asp-route-studentId="@student.Id" class="msg-title">@student.Name @student.LastName</a>
+                    <button data-id="@student.Id" class="btn btn-link show-grades-student"><span class="fa fa-chevron-down"></span></button>
+                    <div id="student-grade-holder">
+
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/raport.js"></script>

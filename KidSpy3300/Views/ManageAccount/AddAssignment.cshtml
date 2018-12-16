@@ -22,10 +22,12 @@
                     <div class="form-group">
                         <label for="assignment-name">Assignment:</label>
                         <input type="text" class="form-control" id="assignment-name" placeholder="Assignment" asp-for="AssignmentName">
+                        <span asp-validation-for="AssignmentName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label for="assignment-name">Due Date:</label>
-                        <input type="text" value="@DateTime.Today.ToShortDateString()" class="form-control" id="datetimepicker" data-date-format="dd-mm-yyyy" asp-for="DueDateTime">
+                        <label for="date-time-to-validate">Due Date:</label>
+                        <input type="text" value="@DateTime.Today.ToShortDateString()" class="form-control" id="date-time-to-validate" data-date-format="dd-mm-yyyy" asp-for="DueDateTime">
+                        <span id="date-time-validation-text" class="text-danger"></span>
                     </div>
                     <div class="float-right-button-holder">
                         <div class="float-right-button-holder">
@@ -33,7 +35,7 @@
                                 <span class="fa fa-chevron-left"></span>
                                 Back
                             </a>
-                            <button id="add-assignment" class="float-right btn btn-success mt-4">
+                            <button id="add-assignment" onclick="return validateDateTime()" class="float-right btn btn-success mt-4">
                                 <span class="fa fa-plus"></span>
                                 Add
                             </button>
@@ -44,3 +46,5 @@
         </div>
     </div>
 </div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/validate-date-time.js"></script>

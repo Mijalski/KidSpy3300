@@ -14,6 +14,8 @@ namespace KidSpy3300.Controllers
 {
     public class ManageAccountController : Controller
     {
+        public static int MessagesToRead = 3;
+
         private readonly IStudent _students;
         private readonly IMessage _messages;
         private readonly IMark _marks;
@@ -23,7 +25,7 @@ namespace KidSpy3300.Controllers
         private readonly IAssignment _assignments;
         private readonly UserManager<UserAccount> _userManager;
         private Task<UserAccount> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
-
+        
         public ManageAccountController(IStudent students, IMessage messages, ISchoolClass schoolClass, IMark marks, IAssignment assignments, IParentAccount parentAccounts, ITeacherAccount teacherAccounts, UserManager<UserAccount> userManager)
         {
             _schoolClasses = schoolClass;
@@ -53,16 +55,19 @@ namespace KidSpy3300.Controllers
 
             if (user is ParentAccount)
             {
-
-                var messagesIn = _messages.GetForUserReceiving(user.Id);
-                var messagesOut = _messages.GetForUserSending(user.Id);
+                var messagesIn = _messages.GetForUserReceiving(user.Id, 0, MessagesToRead, out var isMoreIn);
+                var messagesOut = _messages.GetForUserSending(user.Id, 0, MessagesToRead, out var isMoreOut);
                 var students = _students.GetForParent(user.Id);
 
                 var model = new ManageAccountModel()
                 {
                     MessagesInbound = messagesIn,
                     MessagesOutbound = messagesOut,
-                    Students = students
+                    Students = students,
+                    IsMoreIn = isMoreIn,
+                    IsMoreOut = isMoreOut,
+                    Offset = MessagesToRead,
+                    UserId = user.Id
                 };
 
                 return View(model);
@@ -79,8 +84,8 @@ namespace KidSpy3300.Controllers
             if (user is TeacherAccount)
             {
                 var sc = _schoolClasses.GetByTeacher(user.Id);
-                var messagesIn = _messages.GetForUserReceiving(user.Id);
-                var messagesOut = _messages.GetForUserSending(user.Id);
+                var messagesIn = _messages.GetForUserReceiving(user.Id, 0, MessagesToRead, out var isMoreIn);
+                var messagesOut = _messages.GetForUserSending(user.Id, 0, MessagesToRead, out var isMoreOut);
                 var students = _students.GetStudentsForSchoolClass(sc.Id);
                 var assignmentsGraded = _assignments.GetGradedForSchoolClassId(sc.Id);
                 var assignmentsNotGraded = _assignments.GetNotGradedForSchoolClassId(sc.Id);
@@ -92,7 +97,11 @@ namespace KidSpy3300.Controllers
                     Students = students,
                     TeacherSchoolClass = sc,
                     AssignmentsGraded = assignmentsGraded,
-                    AssignmentsNotGraded = assignmentsNotGraded
+                    AssignmentsNotGraded = assignmentsNotGraded,
+                    IsMoreIn = isMoreIn,
+                    IsMoreOut = isMoreOut,
+                    Offset = MessagesToRead,
+                    UserId = user.Id
                 };
 
                 return View(model);
@@ -212,20 +221,33 @@ namespace KidSpy3300.Controllers
         
         
         [Authorize]
-        public async Task<IActionResult> AddMark(int studentId)
+        public async Task<IActionResult> AddMark(int studentId, int markId)
         {
             var user = await GetCurrentUserAsync();
 
             if (user is TeacherAccount teacher)
             {
                 var student = _students.GetById(studentId);
-
-                var model = new AddMarkModel()
+                if (markId > 0)
                 {
-                    Student = student
-                };
+                    var mark = _marks.GetById(markId);
 
-                return View(model);
+                    var model = new AddMarkModel()
+                    {
+                        Student = student,
+                        MarkToEdit = mark
+                    };
+                    return View(model);
+                }
+                else
+                {
+                    var model = new AddMarkModel()
+                    {
+                        Student = student
+                    };
+                    return View(model);
+                }
+                
             }
 
             return RedirectToAction("Error", "Home");
@@ -302,6 +324,42 @@ namespace KidSpy3300.Controllers
         }
         
         [Authorize]
+        public async Task<IActionResult> ShowRaport(int classId)
+        {
+            var user = await GetCurrentUserAsync();
+
+            if (user is TeacherAccount teacher)
+            {
+                var students = _students.GetStudentsForSchoolClass(classId);
+                var teacherId = teacher.Id;
+                var markNumber = _marks.GetForTeacherId(teacherId).Count;
+                var sc = _schoolClasses.GetById(classId);
+                var assignmentsGraded = _assignments.GetGradedForSchoolClassId(sc.Id);
+                var assignmentsNotGraded = _assignments.GetNotGradedForSchoolClassId(sc.Id);
+                var assignmentsTotal = assignmentsGraded.Count + assignmentsNotGraded.Count;
+
+                var model = new ShowRaportModel()
+                {
+                    Students = students,
+                    AssignmentsTotal = assignmentsTotal,
+                    AssignmentsGraded = assignmentsGraded,
+                    AssignmentsNotGraded = assignmentsNotGraded,
+                    MarksA = _marks.GetForTeacherIdByMarkType(teacherId, MarkType.A),
+                    MarksB = _marks.GetForTeacherIdByMarkType(teacherId, MarkType.B),
+                    MarksC = _marks.GetForTeacherIdByMarkType(teacherId, MarkType.C),
+                    MarksD = _marks.GetForTeacherIdByMarkType(teacherId, MarkType.D),
+                    MarksE = _marks.GetForTeacherIdByMarkType(teacherId, MarkType.E),
+                    MarksTotal = markNumber,
+                    SchoolClass = sc
+                };
+
+                return View(model);
+            }
+
+            return RedirectToAction("Error", "Home");
+        }
+
+        [Authorize]
         public async Task<IActionResult> DeleteStudentSubmit(int studentId)
         {
             var user = await GetCurrentUserAsync();
@@ -324,25 +382,48 @@ namespace KidSpy3300.Controllers
 
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddMarkSubmit(AddMarkModel model, int studentId)
+        public async Task<IActionResult> AddMarkSubmit(AddMarkModel model, int studentId, int markId)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && model.MarkValue > 0 )
             {
                 var user = await GetCurrentUserAsync();
 
                 if (user is TeacherAccount teacherAccount)
                 {
                     var mark = new Mark()
-                    { 
+                    {
                         Teacher = teacherAccount,
-                        MarkType = (MarkType)model.MarkValue,
+                        MarkType = (MarkType) model.MarkValue,
                         Description = model.Description,
                         MarkDate = DateTime.Now
                     };
 
-                    _students.AddNewMark(studentId, mark);
-                    
-                    return RedirectToAction("Index");
+                    if (markId == 0)
+                    {
+                        _students.AddNewMark(studentId, mark);
+
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        _marks.EditMark(markId, mark);
+                        var markNew = _marks.GetById(markId);
+
+                        if (markNew.Assignment != null)
+                        {
+                            var assignmentId = markNew.Assignment.Id;
+                            var marks = _marks.GetForAssignmentId(assignmentId);
+                            var total = 0;
+                            foreach (var m in marks)
+                            {
+                                total += (int)m.MarkType;
+                            }
+
+                            _assignments.SetGraded(markNew.Assignment,total/marks.Count);
+                        }
+
+                        return RedirectToAction("Index");
+                    }
                 }
             }
             
@@ -353,7 +434,7 @@ namespace KidSpy3300.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddKidSubmit(AddKidModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && model.ChoosenSchoolClassId>0)
             {
                 var user = await GetCurrentUserAsync();
 
@@ -380,7 +461,7 @@ namespace KidSpy3300.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult>  SendMessageSubmit(SendMessageModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !string.IsNullOrEmpty(model.ToUserId))
             {
                 var user = await GetCurrentUserAsync();
                 var toUser = user is ParentAccount ? (UserAccount) _teacherAccounts.GetById(model.ToUserId) : _parentAccounts.GetById(model.ToUserId);
@@ -406,7 +487,7 @@ namespace KidSpy3300.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddAssignmentSubmit(AddAssignmentModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && model.DueDateTime is DateTime && model.DueDateTime > DateTime.Now)
             {
                 var user = await GetCurrentUserAsync();
                 if (user is TeacherAccount)
@@ -439,6 +520,7 @@ namespace KidSpy3300.Controllers
                 if (user is TeacherAccount teacher)
                 {
                     var assignment = _assignments.GetById(assigmentId);
+                    var total = 0;
                     for(var i = 0; i < model.StudentIds.Count;i++)
                     {
                         var mark = new Mark()
@@ -449,10 +531,10 @@ namespace KidSpy3300.Controllers
                             MarkType = model.Marks[i],
                             Teacher = teacher
                         };
-
+                        total += (int)mark.MarkType;
                         _students.AddNewMark(model.StudentIds[i], mark);
                     }
-                    _assignments.SetGraded(assignment);
+                    _assignments.SetGraded(assignment, total/model.StudentIds.Count);
 
                     return RedirectToAction("Index");
                 }
@@ -460,6 +542,7 @@ namespace KidSpy3300.Controllers
             
             return RedirectToAction("Error", "Home");
         }
+        
     }
 }
 

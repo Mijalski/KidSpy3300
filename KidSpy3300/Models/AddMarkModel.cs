@@ -11,10 +11,11 @@ namespace KidSpy3300.Models
     {
         public Student Student { get; set; }
 
-        [Required]
-        [Range(1,5)]
+        public Mark MarkToEdit { get; set; }
+        
         public int MarkValue { get; set; }
-
+        
+        [MinLength(3), MaxLength(200)]
         public string Description { get; set; }
         
     }

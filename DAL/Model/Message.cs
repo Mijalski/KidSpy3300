@@ -13,6 +13,7 @@ namespace DAL.Model
         Read = 3,
         Error = 4
     }
+    
     public class Message
     {
         [Key]

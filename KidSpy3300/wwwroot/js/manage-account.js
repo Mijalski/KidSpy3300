@@ -42,5 +42,80 @@
             gradedA.hide();
         });
     }
+
+    
+    $(document).ready(function() {
+        $("#show-more-out").click(ajaxMoreMessagesOut);
+
+    });
+    
+    $(document).ready(function() {
+        $("#show-more-in").click(ajaxMoreMessagesIn);
+
+    });
 })();
+
+var ajaxMoreMessagesOut = function() {
+    var messages = $(".message-box-out");
+    var userId = $(this).data("id");
+    var htmlButton = $(this).get(0).outerHTML;
+    $(this).remove();
+    $.ajax({
+        type: 'GET',
+        url: '../api/Messages?id='+userId+"&offset="+messages.length+"&inbound=false",
+        dataType: 'json',
+        //data: { offset : messages.length},
+        success: function(data) {
+            $.each(data,
+                function(index, val) {
+                    if (val.item1 !== -1) {
+                        messages.last().after('<div class="message-box  message-box-out  border-top mt-2">' +
+                            '<a class="msg-title" href="/ManageAccount/ShowMessage?messageId=' +
+                            val.item1 +
+                            '">' +
+                            val.item2 +
+                            '</a><div>To:' +
+                            val.item3 +
+                            ' </div></div>');
+                    } else {
+                        $(".message-box-out").last().after(htmlButton);
+                        $("#show-more-out").click(ajaxMoreMessagesOut);
+                    }
+                });
+        }
+    });
+}
+
+var ajaxMoreMessagesIn = function() {
+    var messages = $(".message-box-in");
+    var userId = $(this).data("id");
+    var htmlButton = $(this).get(0).outerHTML;
+    $(this).remove();
+    $.ajax({
+        type: 'GET',
+        url: '../api/Messages?id='+userId+"&offset="+messages.length+"&inbound=true",
+        dataType: 'json',
+        //data: { offset : messages.length},
+        success: function(data) {
+            $.each(data,
+                function(index, val) {
+                    if (val.item1 !== -1) {
+                        messages.last().after('<div class="message-box  message-box-in  border-top mt-2">' +
+                            '<a class="msg-title" href="/ManageAccount/ShowMessage?messageId=' +
+                            val.item1 +
+                            '">' +
+                            val.item2 +
+                            '</a><div>To:' +
+                            val.item3 +
+                            ' </div></div>');
+                    } else {
+                        $(".message-box-in").last().after(htmlButton);
+                        $("#show-more-in").click(ajaxMoreMessagesIn);
+                    }
+                });
+        }
+    });
+}
+
+
 

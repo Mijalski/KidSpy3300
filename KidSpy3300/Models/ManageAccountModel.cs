@@ -14,5 +14,9 @@ namespace KidSpy3300.Models
         public SchoolClass TeacherSchoolClass;
         public List<Assignment> AssignmentsNotGraded;
         public List<Assignment> AssignmentsGraded;
+        public bool IsMoreIn;
+        public bool IsMoreOut;
+        public int Offset;
+        public string UserId;
     }
 }

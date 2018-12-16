@@ -24,6 +24,19 @@ h4 {
     color: #ffc107;
 }
 
+.rotated-180 {
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+}
+
+.gray-edit {
+    color: gray;
+}
+.link-no-underline:hover {
+    text-decoration: none;
+}
 .mark-big-size {
     font-size: 24px;
 }
@@ -31,13 +44,13 @@ h4 {
     max-width: 75%;
 }
 .mark-color-A {
-    color: #0f1;
+    color: #009933;
 }
 .mark-color-B {
-    color: #c9ff00;
+    color: #99cc00;
 }
 .mark-color-C {
-    color: #fff400;
+    color: #ffcc00;
 }
 .mark-color-D {
     color: #e58b00;

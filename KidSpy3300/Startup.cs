@@ -55,12 +55,6 @@ namespace KidSpy3300
                 
             });
             
-            services.ConfigureApplicationCookie(options =>
-            {
-                options.LoginPath = "/Register";
-                options.ExpireTimeSpan = TimeSpan.FromSeconds(1500);
-            });
-            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSingleton(Configuration);
 
@@ -91,7 +85,7 @@ namespace KidSpy3300
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
+            
             app.UseAuthentication();
 
             app.UseMvc(routes =>
@@ -100,6 +94,7 @@ namespace KidSpy3300
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }

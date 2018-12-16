@@ -45,6 +45,9 @@
     <Content Update="Views\ManageAccount\ShowAssignment.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
+    <Content Update="Views\ManageAccount\ShowRaport.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
     <Content Update="Views\ManageAccount\ShowStudent.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>

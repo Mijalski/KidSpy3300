@@ -11,7 +11,7 @@ namespace DAL
         List<Assignment> GetGradedForSchoolClassId(int id);
         List<Assignment> GetNotGradedForSchoolClassId(int id);
         void Add(Assignment assignment);
-        void SetGraded(Assignment assignment);
+        void SetGraded(Assignment assignment, int averageMark);
         List<Assignment> GetForStudent(int id);
         List<Assignment> GetNotGradedForStudent(int id);
     }

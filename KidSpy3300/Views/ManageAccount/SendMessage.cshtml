@@ -18,60 +18,64 @@
             </div>
             <div class="my-box">
 
-                @if (Model.UserAccounts !=null && Model.UserAccounts.Any())
+                @if (Model.UserAccounts != null && Model.UserAccounts.Any())
                 {
-                <form class="register-form" method="POST" asp-controller="ManageAccount" asp-action="SendMessageSubmit">
-                    <div class="form-group">
-                         <label for="teacher-select">To:</label>
-                         <select id="teacher-select" class="form-control" asp-for="ToUserId">
-                             <option value="-1">Select...</option>
-                             @foreach (var t in Model.UserAccounts)
-                             {
-                                 @if (t.Id == Model.PreSelectedId)
-                                  {
-                                      <option selected="selected" value="@t.Id">@t.Name @t.LastName</option>
-                                  }
-                                  else
-                                  {
-                                      <option value="@t.Id">@t.Name @t.LastName</option>
-                                  }
-                             }
-                         </select>
-                         <span asp-validation-for="ToUserId" class="text-danger"></span>
-                     </div>
-                    <div class="form-group">
-                        <label for="title">Title:</label>
-                        <input type="text" class="form-control" id="title" placeholder="Title" asp-for="MessageTitle">
-                    </div>
+                    <form class="register-form" method="POST" asp-controller="ManageAccount" asp-action="SendMessageSubmit">
+                        <div class="form-group">
+                            <label for="dropdown-to-validate">To:</label>
+                            <select id="dropdown-to-validate" class="form-control" asp-for="ToUserId">
+                                <option value="-1">Select...</option>
+                                @foreach (var t in Model.UserAccounts)
+                                {
+                                    if (t.Id == Model.PreSelectedId)
+                                    {
+                                        <option selected="selected" value="@t.Id">@t.Name @t.LastName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@t.Id">@t.Name @t.LastName</option>
+                                    }
+                                }
+                            </select>
+                            <span id="dropdown-validate-text" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="title">Title:</label>
+                            <input type="text" class="form-control" id="title" placeholder="Title" asp-for="MessageTitle">
+                            <span asp-validation-for="MessageTitle" class="text-danger"></span>
+                        </div>
 
-                    <div class="form-group">
-                        <label for="content">Body:</label>
-                        <textarea type="text" rows="6" class="form-control" id="content" placeholder="" asp-for="MessageContent"></textarea>
-                    </div>
+                        <div class="form-group">
+                            <label for="content">Body:</label>
+                            <textarea type="text" rows="6" class="form-control" id="content" placeholder="" asp-for="MessageContent"></textarea>
+                            <span asp-validation-for="MessageContent" class="text-danger"></span>
+                        </div>
 
+                        <div class="float-right-button-holder">
+                            <a id="go-back" class="float-left btn btn-secondary mt-4" asp-controller="ManageAccount" asp-action="Index">
+                                <span class="fa fa-chevron-left"></span>
+                                Back
+                            </a>
+                            <button id="send-message" onclick="return validateDropdown()" class="float-right btn btn-success mt-4">
+                                <span class="fa fa-envelope"></span>
+                                Send
+                            </button>
+                        </div>
+                    </form>
+                }
+                else
+                {
+                    <div class="d-block text-center">Sorry, no teachers to send a message to</div>
                     <div class="float-right-button-holder">
                         <a id="go-back" class="float-left btn btn-secondary mt-4" asp-controller="ManageAccount" asp-action="Index">
                             <span class="fa fa-chevron-left"></span>
                             Back
                         </a>
-                        <button id="send-message" class="float-right btn btn-success mt-4">
-                            <span class="fa fa-envelope"></span>
-                            Send
-                        </button>
                     </div>
-                </form>
-                }
-                else
-                {
-                <div class="d-block text-center">Sorry, no teachers to send a message to</div>
-                <div class="float-right-button-holder">
-                    <a id="go-back" class="float-left btn btn-secondary mt-4" asp-controller="ManageAccount" asp-action="Index">
-                        <span class="fa fa-chevron-left"></span>
-                        Back
-                    </a>
-                </div>
                 }
             </div>
         </div>
     </div>
 </div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/validate-dropdown.js"></script>

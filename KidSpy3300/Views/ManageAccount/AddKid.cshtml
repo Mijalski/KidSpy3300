@@ -22,18 +22,19 @@
                     <div class="form-group">
                         <label for="name">First Name:</label>
                         <input type="text" class="form-control" id="name" placeholder="Name" asp-for="StudentName">
+                        <span asp-validation-for="StudentName" class="text-danger"></span>
                     </div>
 
                     <div class="form-group">
-                        <label for="class-select">Class:</label>
-                        <select id="class-select" class="form-control" asp-for="ChoosenSchoolClassId">
+                        <label for="dropdown-to-validate">Class:</label>
+                        <select id="dropdown-to-validate" class="form-control" asp-for="ChoosenSchoolClassId">
                             <option value="-1">Select...</option>
                             @foreach (var c in Model.SchoolClassesWithTeachers)
                             {
                                 <option value="@c.Id">@c.Name (@c.TeacherAccount.Name @c.TeacherAccount.LastName)</option>
                             }
                         </select>
-                        <span asp-validation-for="ChoosenSchoolClassId" class="text-danger"></span>
+                        <span id="dropdown-validate-text" class="text-danger"></span>
                     </div>
                     <div class="float-right-button-holder">
                         <div class="float-right-button-holder">
@@ -41,7 +42,7 @@
                                 <span class="fa fa-chevron-left"></span>
                                 Back
                             </a>
-                            <button id="send-message" class="float-right btn btn-success mt-4">
+                            <button id="send-message" onclick="return validateDropdown()" class="float-right btn btn-success mt-4">
                                 <span class="fa fa-plus"></span>
                                 Add
                             </button>
@@ -52,3 +53,5 @@
         </div>
     </div>
 </div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/validate-dropdown.js"></script>

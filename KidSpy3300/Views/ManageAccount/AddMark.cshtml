@@ -7,7 +7,14 @@
 @using KidSpy3300.Models
 @model KidSpy3300.Models.AddMarkModel
 
-<h2 class="manage-title">Add mark</h2>
+@if (Model.MarkToEdit == null)
+{
+    <h2 class="manage-title">Add mark</h2>
+}
+else
+{
+    <h2 class="manage-title">Edit mark</h2>
+}
 
 <div class="row">
     <div class="offset-md-3"></div>
@@ -17,23 +24,36 @@
                 <h5>Grade @Model.Student.Name @Model.Student.LastName</h5>
             </div>
             <div class="my-box">
-                <form class="register-form" method="POST" asp-controller="ManageAccount" asp-action="AddMarkSubmit" asp-route-studentid="@Model.Student.Id">
-
+                <form class="register-form" method="POST" asp-controller="ManageAccount" asp-action="AddMarkSubmit" asp-route-studentid="@Model.Student.Id"
+                      asp-route-markId="@if(Model.MarkToEdit!=null){ @Model.MarkToEdit.Id }">
                     <div class="form-group">
-                        <label for="mark-select">Mark:</label>
-                        <select id="mark-select" class="form-control" asp-for="MarkValue">
+                        <label for="dropdown-to-validate">Mark:</label>
+                        <select id="dropdown-to-validate" class="form-control" asp-for="MarkValue">
                             <option value="-1">Select...</option>
                             @foreach (var mark in Enum.GetValues(typeof(MarkType)))
                             {
-                                <option value="@Convert.ToInt32(mark)">@mark</option>
+                                if (Model.MarkToEdit != null && Convert.ToInt32(Model.MarkToEdit.MarkType) == Convert.ToInt32(mark))
+                                {
+                                    <option value="@Convert.ToInt32(mark)" selected="selected">@mark</option>
+                                }
+                                else
+                                {
+                                    <option value="@Convert.ToInt32(mark)">@mark</option>
+                                }
                             }
                         </select>
-                        <span asp-validation-for="MarkValue" class="text-danger"></span>
+                        <span id="dropdown-validate-text" class="text-danger"></span>
                     </div>
-                    
+
                     <div class="form-group">
-                        <label for="content">Description:</label>
-                        <textarea type="text" rows="6" class="form-control" id="description" placeholder="" asp-for="Description"></textarea>
+                        <label for="description">Description:</label>
+
+                        @if (Model.MarkToEdit != null)
+                        {
+                            Model.Description = Model.MarkToEdit.Description;
+                        }
+
+                        <textarea type="text" rows="6" class="form-control" id="description" asp-for="Description"></textarea>
                     </div>
 
                     <div class="float-right-button-holder">
@@ -42,7 +62,7 @@
                                 <span class="fa fa-chevron-left"></span>
                                 Back
                             </a>
-                            <button id="add-mark" class="float-right btn btn-success mt-4">
+                            <button id="add-mark" onclick="return validateDropdown()" class="float-right btn btn-success mt-4">
                                 <span class="fa fa-plus"></span>
                                 Add
                             </button>
@@ -53,3 +73,5 @@
         </div>
     </div>
 </div>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/validate-dropdown.js"></script>

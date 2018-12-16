@@ -25,8 +25,8 @@
             <div id="msg-in">
                 @foreach (var msg in Model.MessagesInbound)
                 {
-                    <div class="message-box border-top mt-2">
-                        <a asp-area="" asp-controller="ManageAccount" asp-action="ShowMessage" asp-route-messageId="@msg.Id"  class="msg-title">@msg.MessageTitle</a>
+                    <div class="message-box message-box-in border-top mt-2">
+                        <a asp-area="" asp-controller="ManageAccount" asp-action="ShowMessage" asp-route-messageId="@msg.Id" class="msg-title">@msg.MessageTitle</a>
                         @if (msg.Status != Status.Read)
                         {
                             <span class="fa fa-exclamation not-read-warning"></span>
@@ -34,14 +34,22 @@
                         <div>From: @msg.MessageFrom.Name @msg.MessageFrom.LastName</div>
                     </div>
                 }
+                @if (Model.IsMoreIn)
+                {
+                    <button id="show-more-in" data-id="@Model.Offset" class="btn btn-link"><span class="fa fa-chevron-down"></span></button>
+                }
             </div>
             <div id="msg-out">
                 @foreach (var msg in Model.MessagesOutbound)
                 {
-                    <div class="message-box border-top mt-2">
+                    <div class="message-box  message-box-out  border-top mt-2">
                         <a asp-area="" asp-controller="ManageAccount" asp-action="ShowMessage" asp-route-messageId="@msg.Id" class="msg-title">@msg.MessageTitle</a>
                         <div>To: @msg.MessageTo.Name @msg.MessageTo.LastName</div>
                     </div>
+                }
+                @if (Model.IsMoreOut)
+                {
+                    <button id="show-more-out" data-id="@Model.UserId" class="btn btn-link"><span class="fa fa-chevron-down"></span></button>
                 }
             </div>
         </div>

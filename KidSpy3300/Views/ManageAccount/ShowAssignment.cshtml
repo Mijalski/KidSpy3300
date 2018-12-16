@@ -29,6 +29,9 @@
                     </span>
                 </div>
                 }
+                
+                <div class="mt-4">Created on: @Model.Assignment.DateTime</div>
+                <div>Due: @Model.Assignment.DueDate.ToShortDateString()</div>
                 <div class="float-right-button-holder">
                     <div class="float-right-button-holder">
                         <a id="go-back" class="float-left btn btn-secondary mt-4" asp-controller="ManageAccount" asp-action="Index">

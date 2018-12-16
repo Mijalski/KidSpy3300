@@ -13,11 +13,11 @@ namespace KidSpy3300.Models
         public string ToUserId { get; set; }
         
         [Required]
-        [MinLength(5)]
+        [MinLength(3), MaxLength(40)]
         public string MessageTitle { get; set; }
 
         [Required]
-        [MinLength(10)]
+        [MinLength(3), MaxLength(200)]
         public string MessageContent { get; set; }
 
         public List<UserAccount> UserAccounts { get; set; }

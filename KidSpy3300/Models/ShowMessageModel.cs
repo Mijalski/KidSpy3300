@@ -10,7 +10,6 @@ namespace KidSpy3300.Models
     public class ShowMessageModel
     {
         public Message Message { get; set; }
-        public string RespondToId { get; set; }
         public bool YourMessage { get;set; }
     }
 }

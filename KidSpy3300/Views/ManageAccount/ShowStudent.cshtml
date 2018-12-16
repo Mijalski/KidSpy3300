@@ -27,13 +27,14 @@
                 }
                 @foreach (var mark in @Model.Marks)
                 {
-                    <div class="border-bottom">
+                    <div class="border-bottom student-mark">
                         <i class="float-right mt-2">@mark.MarkDate</i>
                         <span class="font-weight-bold">
 
                             <span class="mark-big-size mark-color-@mark.MarkType">
                                 @mark.MarkType
                             </span>
+                            <a asp-controller="ManageAccount" asp-action="AddMark" asp-route-studentId="@Model.Student.Id" asp-route-markId="@mark.Id" class="fa fa-edit link-no-underline gray-edit"></a>
                             @if (mark.Assignment != null)
                             {
                                 <div>@mark.Assignment.Name</div>
@@ -45,7 +46,7 @@
                 }
                 @if (Model.Assignments.Any())
                 {
-                    <div class="msg-title mb-4 mt-3">Assignments not yet graded:</div>
+                    <div class="msg-title mb-4 mt-5">Assignments not yet graded:</div>
                 }
 
                 @foreach (var assignment in @Model.Assignments)
@@ -90,3 +91,9 @@
         </div>
     </div>
 </div>
+@if (Model.IsTeacher)
+{
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/js/edit-student-grades.js"></script>
+
+}

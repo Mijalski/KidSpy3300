@@ -10,13 +10,12 @@ namespace KidSpy3300.Models
     public class AddKidModel
     {
         [Required]
-        [MinLength(3)]
+        [MinLength(3), MaxLength(20)]
         public string StudentName { get; set; }
 
         public List<SchoolClass> SchoolClassesWithTeachers { get; set; }
         
         [Required]
-        [Range(0, double.MaxValue)]
         public int ChoosenSchoolClassId { get; set; }
     }
 }

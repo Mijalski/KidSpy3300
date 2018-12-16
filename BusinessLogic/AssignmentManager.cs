@@ -40,8 +40,9 @@ namespace BusinessLogic
             context.SaveChanges();
         }
 
-        public void SetGraded(Assignment assignment)
+        public void SetGraded(Assignment assignment, int averageMark)
         {
+            assignment.AverageMark = (MarkType) averageMark;
             assignment.IsGraded = true;
             context.SaveChanges();
         }
