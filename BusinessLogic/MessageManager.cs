@@ -32,7 +32,9 @@ namespace BusinessLogic
 
         public List<Message> GetForUserSending(string id, int offset, int amount, out bool isMore)
         {
-            var userMsgs = context.Messages
+            isMore = context.Messages.Count(_ => _.MessageTo.Id == id) > offset + amount;
+
+            return context.Messages
                 .Include(_ => _.MessageFrom)
                 .Include(_ => _.MessageTo)
                 .Where(_ => _.MessageFrom.Id == id)
@@ -40,10 +42,6 @@ namespace BusinessLogic
                 .Skip(offset)
                 .Take(amount)
                 .ToList();
-
-            isMore = userMsgs.Skip(1).Any();
-
-            return userMsgs;
         }
 
         public List<Message> GetForUserReceiving(string id, int offset, int amount, out bool isMore)
@@ -52,11 +50,12 @@ namespace BusinessLogic
                 .Messages.Include(_ => _.MessageFrom)
                 .Include(_ => _.MessageTo)
                 .Where(_ => _.MessageTo.Id == id)
+                .OrderByDescending(_ => _.MessageDate)
                 .Skip(offset)
                 .Take(amount)
                 .ToList();
 
-            isMore = userMsgs.Skip(1).Any();
+            isMore = context.Messages.Count(_ => _.MessageTo.Id == id) > offset + amount;
             
 
             var undeliveredMessages = userMsgs.Where(_ => _.Status == Status.Sent).ToList();
