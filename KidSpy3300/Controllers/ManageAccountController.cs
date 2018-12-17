@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using DAL;
@@ -8,6 +9,7 @@ using DAL.Model;
 using Microsoft.AspNetCore.Mvc;
 using KidSpy3300.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 
 namespace KidSpy3300.Controllers
@@ -47,7 +49,7 @@ namespace KidSpy3300.Controllers
                 RedirectToAction("Parent","ManageAccount") :
                 RedirectToAction("Teacher","ManageAccount"); 
         }
-
+        
         [Authorize]
         public async Task<IActionResult> Parent()
         {
@@ -111,17 +113,20 @@ namespace KidSpy3300.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> AddKid()
+        public async Task<IActionResult> AddKid(int kidId)
         {
             var user = await GetCurrentUserAsync();
 
             if (user is ParentAccount)
             {
                 var sc = _schoolClasses.GetAllTaken();
+                var student = kidId > 0 ?_students.GetById(kidId) : null;
 
                 var model = new AddKidModel()
                 {
-                    SchoolClassesWithTeachers = sc
+                    SchoolClassesWithTeachers = sc,
+                    Student = student 
+                    
                 };
 
                 return View(model);
@@ -432,7 +437,7 @@ namespace KidSpy3300.Controllers
         
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddKidSubmit(AddKidModel model)
+        public async Task<IActionResult> AddKidSubmit(AddKidModel model, int kidId, IFormFile avatarImage)
         {
             if (ModelState.IsValid && model.ChoosenSchoolClassId>0)
             {
@@ -440,20 +445,38 @@ namespace KidSpy3300.Controllers
 
                 if (user is ParentAccount parentAccount)
                 {
-                    var newStudent = new Student()
-                    {
-                        Name = model.StudentName,
-                        LastName = parentAccount.LastName,
-                        SchoolClass = _schoolClasses.GetById(model.ChoosenSchoolClassId)
-                    };
+                        var newStudent = new Student()
+                        {
+                            Name = model.StudentName,
+                            LastName = parentAccount.LastName,
+                            SchoolClass = _schoolClasses.GetById(model.ChoosenSchoolClassId)
+                        };
 
-                    _students.Add(newStudent);
-                    _parentAccounts.AddNewStudent(parentAccount.Id, newStudent);
-                    
-                    return RedirectToAction("Index");
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            await avatarImage.CopyToAsync(memoryStream);
+                            newStudent.AvatarImage = memoryStream.ToArray();
+                        }
+
+                        _students.Add(newStudent);
+                        _parentAccounts.AddNewStudent(parentAccount.Id, newStudent);
+
+                        return RedirectToAction("Index");
+
                 }
             }
-            
+            var student = _students.GetById(kidId);
+            if (student != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await avatarImage.CopyToAsync(memoryStream);
+                    student.AvatarImage = memoryStream.ToArray();
+                }
+
+                _students.UpdateImage();
+            }
+
             return RedirectToAction("Error", "Home");
         }
         

@@ -9,7 +9,7 @@
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
         <link rel="stylesheet" href="~/css/site.css" />
-        <link rel="stylesheet" href="~/css/custom-styles.css" />
+        <link rel="stylesheet" href="~/less/custom-styles.min.css" />
         <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
         <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     </environment>
@@ -18,7 +18,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
-        <link rel="stylesheet" href="~/css/custom-styles.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/less/custom-styles.min.css" />
     </environment>
 </head>
 <body>
@@ -30,13 +30,17 @@
                 </div>
                 <nav id="nav-menu-container">
                     <ul class="nav-menu sf-js-enabled sf-arrows" style="touch-action: pan-y;">
-                        @if(User.Identity.Name != null) {
+                        @if (User.Identity.Name != null)
+                        {
                             <li class="menu-active"><a asp-area="" asp-controller="ManageAccount" asp-action="Index">Hi, @User.Identity.Name</a></li>
-                        }else{
-                             <li class="menu-active"><a asp-area="" asp-controller="Register" asp-action="Index">Sign in</a></li>
+                            <li class=""><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                            <li class=""><a asp-area="" asp-controller="Register" asp-action="LogOut">Log out</a></li>
                         }
-                        <li class=""><a asp-area="" asp-controller="Home" asp-action="About">About us</a></li>
-                        <li class=""><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                        else
+                        {
+                            <li class="menu-active"><a asp-area="" asp-controller="Register" asp-action="Index">Sign in</a></li>
+                            <li class=""><a asp-area="" asp-controller="Home" asp-action="Contact">Contact</a></li>
+                        }
                     </ul>
                 </nav><!-- #nav-menu-container -->		    		
             </div>

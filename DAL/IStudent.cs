@@ -15,5 +15,6 @@ namespace DAL
         void AddNewMark(int studentId, Mark mark);
         List<Student> GetStudentsForSchoolClass(int id);
         void Deactivate(int id);
+        void UpdateImage();
     }
 }

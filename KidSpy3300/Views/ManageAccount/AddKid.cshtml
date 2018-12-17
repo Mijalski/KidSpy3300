@@ -6,35 +6,56 @@
 @using DAL.Model
 @using KidSpy3300.Models
 @model KidSpy3300.Models.AddKidModel
-
-<h2 class="manage-title">Add kid</h2>
+@if (@Model.Student == null)
+{
+    <h2 class="manage-title">Add kid</h2>
+}
+else
+{
+    <h2 class="manage-title">Update picture</h2>
+}
 
 <div class="row">
     <div class="offset-md-3"></div>
     <div class="col-12 col-md-6">
         <div class="my-box-shadow">
             <div class="my-box-title">
-                <h5>Tell us more about new family member</h5>
+                @if (@Model.Student == null)
+                {
+                    <h5>Tell us more about new family member</h5>
+                }
+                else
+                {
+                    <h5>@Model.Student.Name @Model.Student.LastName</h5>
+                }
             </div>
             <div class="my-box">
-                <form class="register-form" method="POST" asp-controller="ManageAccount" asp-action="AddKidSubmit">
+                <form class="register-form" method="POST" enctype="multipart/form-data" asp-controller="ManageAccount" asp-action="AddKidSubmit"
+                      asp-route-kidId="@if(Model.Student!=null){ @Model.Student.Id }">
+                    @if (@Model.Student == null)
+                    {
+                        <div class="form-group">
+                            <label for="name">First Name:</label>
+                            <input type="text" class="form-control" id="name" placeholder="Name" asp-for="StudentName">
+                            <span asp-validation-for="StudentName" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dropdown-to-validate">Class:</label>
+                            <select id="dropdown-to-validate" class="form-control" asp-for="ChoosenSchoolClassId">
+                                <option value="-1">Select...</option>
+                                @foreach (var c in Model.SchoolClassesWithTeachers)
+                                {
+                                    <option value="@c.Id">@c.Name (@c.TeacherAccount.Name @c.TeacherAccount.LastName)</option>
+                                }
+                            </select>
+                            <span id="dropdown-validate-text" class="text-danger"></span>
+                        </div>
+                    }
 
                     <div class="form-group">
-                        <label for="name">First Name:</label>
-                        <input type="text" class="form-control" id="name" placeholder="Name" asp-for="StudentName">
-                        <span asp-validation-for="StudentName" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="dropdown-to-validate">Class:</label>
-                        <select id="dropdown-to-validate" class="form-control" asp-for="ChoosenSchoolClassId">
-                            <option value="-1">Select...</option>
-                            @foreach (var c in Model.SchoolClassesWithTeachers)
-                            {
-                                <option value="@c.Id">@c.Name (@c.TeacherAccount.Name @c.TeacherAccount.LastName)</option>
-                            }
-                        </select>
-                        <span id="dropdown-validate-text" class="text-danger"></span>
+                        <label for="avatar-image">Picture:</label>
+                        <input id="avatar-image" class="form-control" type="file" name="avatarImage" />
                     </div>
                     <div class="float-right-button-holder">
                         <div class="float-right-button-holder">

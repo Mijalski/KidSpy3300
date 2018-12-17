@@ -15,6 +15,8 @@ namespace DAL.Model
         [Required]
         public string Name { get; set; }
         
+        public byte[] AvatarImage { get; set; }
+
         [Required]
         public string LastName { get; set; }
 

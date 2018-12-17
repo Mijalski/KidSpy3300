@@ -28,6 +28,14 @@ namespace KidSpy3300.Controllers
             _signInManager = signInManager;
         }
         
+        [Authorize]
+        public async Task<IActionResult> LogOut()
+        {
+            await HttpContext.SignOutAsync(IdentityConstants.ApplicationScheme);
+
+            return RedirectToAction("LogOut");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogInAction(RegisterModel registerModel)

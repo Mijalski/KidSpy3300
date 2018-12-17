@@ -15,6 +15,19 @@
         <div class="my-box-shadow">
             <div class="my-box-title">
                 @Model.Student.Name @Model.Student.LastName
+                <div class="float-right">
+                    <div class="student-avatar big-border">
+                        @if (Model.Student.AvatarImage != null)
+                        {
+                            <img src="data:image/png;base64,@Convert.ToBase64String(Model.Student.AvatarImage)">
+                        }
+                        @if (!Model.IsTeacher)
+                        {
+                            <a asp-controller="ManageAccount" asp-action="AddKid" asp-route-kidId="@Model.Student.Id"
+                               class="fa fa-2x fa-edit link-no-underline gray-edit"></a>
+                        }
+                    </div>
+                </div>
             </div>
             <div class="my-box">
                 @if (Model.Marks.Any())
@@ -34,7 +47,11 @@
                             <span class="mark-big-size mark-color-@mark.MarkType">
                                 @mark.MarkType
                             </span>
-                            <a asp-controller="ManageAccount" asp-action="AddMark" asp-route-studentId="@Model.Student.Id" asp-route-markId="@mark.Id" class="fa fa-edit link-no-underline gray-edit"></a>
+                            @if (Model.IsTeacher)
+                            {
+                                <a asp-controller="ManageAccount" asp-action="AddMark" asp-route-studentId="@Model.Student.Id" 
+                                   asp-route-markId="@mark.Id" class="fa fa-edit link-no-underline gray-edit"></a>
+                            }
                             @if (mark.Assignment != null)
                             {
                                 <div>@mark.Assignment.Name</div>

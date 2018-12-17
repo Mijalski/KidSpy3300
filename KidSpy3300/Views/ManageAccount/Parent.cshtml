@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_StandardLayout.cshtml";
 }
 
+@using System.Text
 @using DAL.Model
 @using KidSpy3300.Models
 @model KidSpy3300.Models.ManageAccountModel
@@ -64,7 +65,13 @@
             @foreach (var student in Model.Students)
             {
                 <div class="message-box border-top mt-2">
-                    <a asp-area="" asp-controller="ManageAccount" asp-action="ShowStudent" asp-route-studentId="@student.Id"  class="msg-title">@student.Name</a>
+                    <div class="float-left student-avatar small mr-3">
+                        @if (student.AvatarImage!=null)
+                        {
+                            <img src="data:image/png;base64,@Convert.ToBase64String(student.AvatarImage)">
+                        }
+                    </div>
+                    <a asp-area="" asp-controller="ManageAccount" asp-action="ShowStudent" asp-route-studentId="@student.Id" class="msg-title">@student.Name</a>
                     <div>@student.SchoolClass.Name - @student.SchoolClass.TeacherAccount.Name @student.SchoolClass.TeacherAccount.LastName</div>
                 </div>
             }

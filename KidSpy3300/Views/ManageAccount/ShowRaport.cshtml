@@ -88,13 +88,19 @@
             </div>
             @foreach (var student in Model.Students)
             {
-                <div class="message-box border-top mt-2">
-                    <a asp-area="" asp-controller="ManageAccount" asp-action="ShowStudent" asp-route-studentId="@student.Id" class="msg-title">@student.Name @student.LastName</a>
-                    <button data-id="@student.Id" class="btn btn-link show-grades-student"><span class="fa fa-chevron-down"></span></button>
-                    <div id="student-grade-holder">
-
-                    </div>
+            <div class="message-box border-top mt-2">
+                <div class="float-left student-avatar very-small mr-3">
+                    @if (student.AvatarImage != null)
+                    {
+                        <img src="data:image/png;base64,@Convert.ToBase64String(student.AvatarImage)">
+                    }
                 </div>
+                <a asp-area="" asp-controller="ManageAccount" asp-action="ShowStudent" asp-route-studentId="@student.Id" class="msg-title">@student.Name @student.LastName</a>
+                <button data-id="@student.Id" class="btn btn-link show-grades-student"><span class="fa fa-chevron-down"></span></button>
+                <div id="student-grade-holder">
+
+                </div>
+            </div>
             }
         </div>
     </div>

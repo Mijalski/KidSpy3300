@@ -71,5 +71,10 @@ namespace BusinessLogic
             student.IsActive = false;
             context.SaveChanges();
         }
+
+        public void UpdateImage()
+        {
+            context.SaveChanges();
+        }
     }
 }

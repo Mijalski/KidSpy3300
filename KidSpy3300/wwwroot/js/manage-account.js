@@ -59,13 +59,15 @@ var ajaxMoreMessagesOut = function() {
     var messages = $(".message-box-out");
     var userId = $(this).data("id");
     var htmlButton = $(this).get(0).outerHTML;
-    $(this).remove();
+    $(this).after("<span>Loading...</span>");
     $.ajax({
         type: 'GET',
         url: '../api/Messages?id='+userId+"&offset="+messages.length+"&inbound=false",
         dataType: 'json',
         //data: { offset : messages.length},
         success: function(data) {
+            $("#show-more-out").next().remove();
+            $("#show-more-out").remove();
             $.each(data,
                 function(index, val) {
                     if (val.item1 !== -1) {
@@ -78,6 +80,8 @@ var ajaxMoreMessagesOut = function() {
                             val.item3 +
                             ' </div></div>');
                     } else {
+                        $("#show-more-out").next().remove();
+                        $("#show-more-out").remove();
                         $(".message-box-out").last().after(htmlButton);
                         $("#show-more-out").click(ajaxMoreMessagesOut);
                     }
@@ -90,13 +94,15 @@ var ajaxMoreMessagesIn = function() {
     var messages = $(".message-box-in");
     var userId = $(this).data("id");
     var htmlButton = $(this).get(0).outerHTML;
-    $(this).remove();
+    $(this).after("<span>Loading...</span>");
     $.ajax({
         type: 'GET',
         url: '../api/Messages?id='+userId+"&offset="+messages.length+"&inbound=true",
         dataType: 'json',
         //data: { offset : messages.length},
         success: function(data) {
+            $("#show-more-in").next().remove();
+            $("#show-more-in").remove();
             $.each(data,
                 function(index, val) {
                     if (val.item1 !== -1) {
@@ -109,6 +115,8 @@ var ajaxMoreMessagesIn = function() {
                             val.item3 +
                             ' </div></div>');
                     } else {
+                        $("#show-more-in").next().remove();
+                        $("#show-more-in").remove();
                         $(".message-box-in").last().after(htmlButton);
                         $("#show-more-in").click(ajaxMoreMessagesIn);
                     }
