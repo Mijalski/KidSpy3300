@@ -14,7 +14,7 @@ var classValidation = $("#class-select-register-validation");
     }
 })();
 
-$('input[type=radio][name=userAccountStatus]').change(function() {
+$('input[type=radio]').change(function() {
     var isParent = $('input[type=radio][id=parent-register]').is(':checked');
     if (isParent === false) {
         classSelect.removeAttr('disabled');

@@ -71,7 +71,7 @@ namespace KidSpy3300.Controllers
             {
                 IdentityResult result;
                 UserAccount user;
-                UserAccountType accountType = registerModel.isTeacher ? UserAccountType.TeacherAccount : UserAccountType.ParentAccount;
+                UserAccountType accountType = registerModel.AccountType == "teacher" ? UserAccountType.TeacherAccount : UserAccountType.ParentAccount;
 
                 var pH = new PasswordHasher<UserAccount>();
 

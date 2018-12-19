@@ -16,7 +16,7 @@ namespace KidSpy3300.Models
         public IEnumerable<SchoolClassModel> SchoolClasses { get; set; }
         
         [Required]
-        public bool isTeacher { get; set; }
+        public string AccountType { get; set; }
 
         [Required(ErrorMessage = "Required field")]
         [StringLength(30, MinimumLength = 3)]

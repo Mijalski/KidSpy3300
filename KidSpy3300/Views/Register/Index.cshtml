@@ -43,13 +43,13 @@
             <form class="register-form" method="POST" asp-controller="Register" asp-action="RegisterAction">
                 <div class="radio">
                     <label>
-                        <input type="radio" name="userAccountStatus" value="true" id="teacher-register" checked asp-for="isTeacher">
+                        <input type="radio" value="teacher" id="teacher-register" checked asp-for="AccountType">
                         I am a teacher
                     </label>
                 </div>
                 <div class="radio">
                     <label>
-                        <input type="radio" name="userAccountStatus" value="false" id="parent-register" asp-for="isTeacher">
+                        <input type="radio" value="parent" id="parent-register" asp-for="AccountType">
                         I am a concerned parent
                     </label>
                 </div>
