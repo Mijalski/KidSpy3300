@@ -452,10 +452,13 @@ namespace KidSpy3300.Controllers
                             SchoolClass = _schoolClasses.GetById(model.ChoosenSchoolClassId)
                         };
 
-                        using (var memoryStream = new MemoryStream())
+                        if (avatarImage != null)
                         {
-                            await avatarImage.CopyToAsync(memoryStream);
-                            newStudent.AvatarImage = memoryStream.ToArray();
+                            using (var memoryStream = new MemoryStream())
+                            {
+                                await avatarImage.CopyToAsync(memoryStream);
+                                newStudent.AvatarImage = memoryStream.ToArray();
+                            }
                         }
 
                         _students.Add(newStudent);
