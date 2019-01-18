@@ -478,6 +478,7 @@ namespace KidSpy3300.Controllers
                 }
 
                 _students.UpdateImage();
+                return RedirectToAction("Index");
             }
 
             return RedirectToAction("Error", "Home");
